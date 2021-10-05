@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NotFightClub_Models.ViewModels
+namespace FightsApi_Models.ViewModels
 {
     class ViewWeather
     {

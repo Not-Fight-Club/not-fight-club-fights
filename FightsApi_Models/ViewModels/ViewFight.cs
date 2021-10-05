@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NotFightClub_Models.Models;
+//using NotFightClub_Models.Models;
 
-namespace NotFightClub_Models.ViewModels
+namespace FightsApi_Models.ViewModels
 {
   public class ViewFight
   {
