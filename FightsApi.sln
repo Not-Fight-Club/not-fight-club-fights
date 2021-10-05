@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FightsApi_Buisiness", "Figh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FightsApi_Test", "FightsApi_Test\FightsApi_Test.csproj", "{5CA8250E-8037-43FA-9BE0-8678C62C45C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FightsApi_Models", "FightsApi_Models\FightsApi_Models.csproj", "{868F2577-2DEB-45C2-B45E-48D91DD0E3ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5CA8250E-8037-43FA-9BE0-8678C62C45C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CA8250E-8037-43FA-9BE0-8678C62C45C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CA8250E-8037-43FA-9BE0-8678C62C45C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{868F2577-2DEB-45C2-B45E-48D91DD0E3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{868F2577-2DEB-45C2-B45E-48D91DD0E3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{868F2577-2DEB-45C2-B45E-48D91DD0E3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{868F2577-2DEB-45C2-B45E-48D91DD0E3ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
