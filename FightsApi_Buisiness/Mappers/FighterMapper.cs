@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NotFightClub_Logic.Mappers
+namespace FightsApi_Buisiness.Mappers
 {
   public class FighterMapper : IMapper<Fighter, ViewFighter>
   {
