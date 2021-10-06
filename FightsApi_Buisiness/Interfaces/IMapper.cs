@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NotFightClub_Logic.Interfaces
+namespace FightsApi_Buisiness.Interfaces
 {
     public interface IMapper<T, Y>
     {

@@ -1,6 +1,6 @@
-﻿using NotFightClub_Logic.Interfaces;
-using NotFightClub_Models.Models;
-using NotFightClub_Models.ViewModels;
+﻿using FightsApi_Buisiness.Interfaces;
+using FightsApi_Models.Models;
+using FightsApi_Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

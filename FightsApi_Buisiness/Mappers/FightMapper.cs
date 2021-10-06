@@ -1,13 +1,13 @@
-﻿using NotFightClub_Logic.Interfaces;
-using NotFightClub_Models.Models;
-using NotFightClub_Models.ViewModels;
+﻿using FightsApi_Buisiness.Interfaces;
+using FightsApi_Models.Models;
+using FightsApi_Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NotFightClub_Logic.Mappers
+namespace FightsApi_Logic.Mappers
 {
   public class FightMapper : IMapper<Fight, ViewFight>
   {
