@@ -1,13 +1,13 @@
-﻿using NotFightClub_Logic.Interfaces;
-using NotFightClub_Models.Models;
-using NotFightClub_Models.ViewModels;
+﻿using FightsApi_Buisiness.Interfaces;
+using FightsApi_Data;
+using FightsApi_Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NotFightClub_Logic.Mappers
+namespace FightsApi_Buisiness.Mappers
 {
   public class FighterMapper : IMapper<Fighter, ViewFighter>
   {
@@ -17,7 +17,7 @@ namespace NotFightClub_Logic.Mappers
       viewFighter.FighterId = obj.FighterId;
       viewFighter.FightId = obj.FightId;
       viewFighter.CharacterId = obj.CharacterId;
-      viewFighter.Votes = obj.Votes;
+    //  viewFighter.Votes = obj.Votes;
 
       return viewFighter;
     }
@@ -26,9 +26,9 @@ namespace NotFightClub_Logic.Mappers
     {
       Fighter fighter = new Fighter();
       fighter.FighterId = obj.FighterId;
-      fighter.FightId = obj.FightId;
-      fighter.CharacterId = obj.CharacterId;
-      fighter.Votes = obj.Votes;
+    //  fighter.FightId = obj.FightId;
+   //   fighter.CharacterId = obj.CharacterId;
+     // fighter.Votes = obj.Votes;
 
       return fighter;
     }
@@ -42,7 +42,7 @@ namespace NotFightClub_Logic.Mappers
         f.FighterId = obj[i].FighterId;
         f.FightId = obj[i].FightId;
         f.CharacterId = obj[i].CharacterId;
-        f.Votes = obj[i].Votes;
+    //    f.Votes = obj[i].Votes;
         fighters.Add(f);
       }
 
@@ -55,9 +55,9 @@ namespace NotFightClub_Logic.Mappers
       for (int i = 0; i < obj.Count; i++)
       {
         fighters[i].FighterId = obj[i].FighterId;
-        fighters[i].FightId = obj[i].FightId;
-        fighters[i].CharacterId = obj[i].CharacterId;
-        fighters[i].Votes = obj[i].Votes;
+       // fighters[i].FightId = obj[i].FightId;
+    //    fighters[i].CharacterId = obj[i].CharacterId;
+      //  fighters[i].Votes = obj[i].Votes;
       }
 
       return fighters;

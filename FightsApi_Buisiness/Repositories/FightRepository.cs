@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NotFightClub_Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using FightsApi_Buisiness.Interfaces;
 using FightsApi_Models.ViewModels;
 using FightsApi_Data;
 
-namespace NotFightClub_Logic.Repositiories
+namespace FightsApi_Buisiness.Repositiories
 {
   public class FightRepository : IRepository<ViewFight, int>
   {
