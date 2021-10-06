@@ -1,24 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using FightsApi_Buisiness.Interfaces;
 using FightsApi_Models.ViewModels;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace FightsApi_Buisiness.Repositories
 {
 	public class CharacterRepository : IRepository<ViewCharacter, int>
 	{
-		public Task<ViewCharacter> Add(ViewCharacter obj)
+    private IHttpClientFactory _clientFactory;
+    private ILogger<CharacterRepository> _logger;
+    private IConfiguration _config;
+    public CharacterRepository(IHttpClientFactory clientFactory, ILogger<CharacterRepository> logger, IConfiguration config)
+    {
+      _clientFactory = clientFactory;
+      _logger = logger;
+      _config = config;
+    }
+
+
+    public Task<ViewCharacter> Add(ViewCharacter obj)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<ViewCharacter> Read(int obj)
+		public async Task<ViewCharacter> Read(int characterId)
 		{
-			// Access microservice for characters
-			throw new NotImplementedException();
+      // Access microservice for characters
+      string baseUrl = _config["CharactersApiURL"];
+      string endpointURI = $"{baseUrl}/Character/{characterId}";
+      var request = new HttpRequestMessage(HttpMethod.Get, baseUrl);
+      var client = _clientFactory.CreateClient("charactersApi");
+      var response = await client.SendAsync(request);
+      if (response.IsSuccessStatusCode)
+      {
+        string responseJson = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<ViewCharacter>(responseJson);
+      }
+      else
+      {
+        _logger.LogError($"Failed request to {endpointURI}: {response.ToString()}");
+        return null;
+      }
 		}
 
 		public Task<List<ViewCharacter>> Read()
