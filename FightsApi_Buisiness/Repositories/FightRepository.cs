@@ -10,7 +10,7 @@ using FightsApi_DbContext;
 
 namespace FightsApi_Buisiness.Repositiories
 {
-  public class FightRepository : IRepository<ViewFight, int>
+  public class FightRepository : IFightRepository
   {
     private readonly P3_NotFightClubContext _dbContext;
     private readonly IMapper<Fight, ViewFight> _mapper;
@@ -26,7 +26,8 @@ namespace FightsApi_Buisiness.Repositiories
       throw new NotImplementedException();
     }
 
-    public async Task<ViewFight> Read(int obj)
+
+		public async Task<ViewFight> Read(int obj)
     {
       Fight fight = await Task.Run(() => _dbContext.Fights.Find(obj));
 
@@ -50,5 +51,18 @@ namespace FightsApi_Buisiness.Repositiories
     {
       throw new NotImplementedException();
     }
+
+    //find all fights by userId
+    public async Task<List<ViewFight>> FindFightsByUserId(int userId)
+    {//
+    List<ViewFight> userFights = await _dbContext.Fights.Where(f => f.FightId == userId).Include("WeatherNavigation")
+        .Include("LocationNavigation").Include(fight => fight.Fighters).Include(f=>f.Fighters)
+        .ThenInclude(fighter => fighter.Votes)
+        .Select(f=> _mapper.ModelToViewModel(f)).ToListAsync();
+      return userFights;
+      //var fights = await _dbContext.Fights.Where(f => f.FightId == userId).Join(_dbContext.Fighters, fid1 => fid)
+    }
+
+
   }
 }
