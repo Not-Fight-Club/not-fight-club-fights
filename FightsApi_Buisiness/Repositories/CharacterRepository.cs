@@ -33,10 +33,12 @@ namespace FightsApi_Buisiness.Repositories
 		public async Task<ViewCharacter> Read(int characterId)
 		{
       // Access microservice for characters
-      string baseUrl = _config["CharactersApiURL"];
-      string endpointURI = $"{baseUrl}/Character/{characterId}";
-      var request = new HttpRequestMessage(HttpMethod.Get, baseUrl);
+      //string baseUrl = _config["CharactersApiURL"];
+      //string endpointURI = $"{baseUrl}/Character/{characterId}";
+      string endpointURI = $"Character/{characterId}";
+      var request = new HttpRequestMessage(HttpMethod.Get, endpointURI);
       var client = _clientFactory.CreateClient("charactersApi");
+      _logger.LogInformation($"base address for client api: {client.BaseAddress}");
       var response = await client.SendAsync(request);
       if (response.IsSuccessStatusCode)
       {
@@ -45,7 +47,7 @@ namespace FightsApi_Buisiness.Repositories
       }
       else
       {
-        _logger.LogError($"Failed request to {endpointURI}: {response.ToString()}");
+        _logger.LogError($"Failed request to {endpointURI}: {response}");
         return null;
       }
 		}
