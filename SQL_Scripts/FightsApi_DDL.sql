@@ -28,6 +28,7 @@ FightId int not null identity (1,1) primary key,
 [EndDate] DATETIME2 default getdate(),
 [Location] int foreign key references [Location](LocationId),
 Weather int foreign key references Weather(WeatherId),
+CreatorId uniqueidentifier null, -- if fight was created by a user, this is the userId
 [Public] bit default 0
 );
 
