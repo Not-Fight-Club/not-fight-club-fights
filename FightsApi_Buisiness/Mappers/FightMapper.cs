@@ -24,7 +24,7 @@ namespace FightsApi_Logic.Mappers
       viewFight.Weather = obj.Weather;
 
       return viewFight;
-    }
+        }
 
 
     public Fight ViewModelToModel(ViewFight obj)
