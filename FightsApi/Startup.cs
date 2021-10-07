@@ -19,6 +19,8 @@ using FightsApi_Buisiness.Repositiories;
 using FightsApi_Buisiness.Repositories;
 using FightsApi_Logic.Mappers;
 using FightsApi_Buisiness.Mappers;
+using System.Net.Http;
+using Microsoft.Extensions.Options;
 
 namespace FightsApi
 {
@@ -73,6 +75,23 @@ namespace FightsApi
       services.AddScoped<IMapper<Fight, ViewFight>, FightMapper>();
       services.AddScoped<IRepository<ViewVote, int>, VoteRepository>();
       services.AddScoped<IMapper<Vote, ViewVote>, VoteMapper>();
+
+      //services.AddHttpClient();
+      // Note: The below code will bypass SSL Certificate checking. This is very insecure and I'm
+      //    only using it to get my localhost domains to work properly. This CANNOT make it to production
+      //      - Jon B
+      // (taken from https://stackoverflow.com/questions/62860290/disable-ssl-certificate-verification-in-default-injected-ihttpclientfactory)
+      services.AddHttpClient(Options.DefaultName, configure =>
+      {
+        //configure.BaseAddress = new Uri(Configuration["CharactersApiURL"]);
+      }).ConfigurePrimaryHttpMessageHandler(() =>
+      {
+        return new HttpClientHandler
+        {
+          ClientCertificateOptions = ClientCertificateOption.Manual,
+          ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, certChain, policyErrors) => true
+        };
+      });
 
 
       services.AddControllers();
