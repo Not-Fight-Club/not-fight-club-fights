@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FightsApi_DbContext
+namespace FightsApi_Data
 {
     public partial class Location
     {

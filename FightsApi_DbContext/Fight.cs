@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FightsApi_DbContext
+namespace FightsApi_Data
 {
     public partial class Fight
     {
@@ -18,6 +18,7 @@ namespace FightsApi_DbContext
         public DateTime? EndDate { get; set; }
         public int? Location { get; set; }
         public int? Weather { get; set; }
+        public Guid? CreatorId { get; set; }
         public bool? Public { get; set; }
 
         public virtual Location LocationNavigation { get; set; }

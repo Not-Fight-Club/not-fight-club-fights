@@ -26,7 +26,7 @@
     <ProjectReference Include="..\FightsApi_Buisiness\FightsApi_Buisiness.csproj">
       <TreatAsUsed>true</TreatAsUsed>
     </ProjectReference>
-    <ProjectReference Include="..\FightsApi_DbContext\FightsApi_DbContext.csproj">
+    <ProjectReference Include="..\FightsApi_DbContext\FightsApi_Data.csproj">
       <TreatAsUsed>true</TreatAsUsed>
     </ProjectReference>
     <ProjectReference Include="..\FightsApi_Models\FightsApi_Models.csproj">

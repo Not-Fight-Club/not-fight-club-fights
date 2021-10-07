@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace FightsApi_DbContext
+namespace FightsApi_Data
 {
     public partial class P3_NotFightClubContext : DbContext
     {
@@ -28,7 +28,7 @@ namespace FightsApi_DbContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=P3_NotFightClub;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=P3_NotFightClub;Trusted_Connection=True;");
             }
         }
 
@@ -49,12 +49,12 @@ namespace FightsApi_DbContext
                 entity.HasOne(d => d.LocationNavigation)
                     .WithMany(p => p.Fights)
                     .HasForeignKey(d => d.Location)
-                    .HasConstraintName("FK__Fight__Location__2A4B4B5E");
+                    .HasConstraintName("FK__Fight__Location__4F7CD00D");
 
                 entity.HasOne(d => d.WeatherNavigation)
                     .WithMany(p => p.Fights)
                     .HasForeignKey(d => d.Weather)
-                    .HasConstraintName("FK__Fight__Weather__2B3F6F97");
+                    .HasConstraintName("FK__Fight__Weather__5070F446");
             });
 
             modelBuilder.Entity<Fighter>(entity =>
@@ -67,7 +67,7 @@ namespace FightsApi_DbContext
                     .WithMany(p => p.Fighters)
                     .HasForeignKey(d => d.FightId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Fighter__FightId__2F10007B");
+                    .HasConstraintName("FK__Fighter__FightId__5441852A");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -89,13 +89,13 @@ namespace FightsApi_DbContext
                     .WithMany(p => p.Votes)
                     .HasForeignKey(d => d.FightId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Votes__FightId__33D4B598");
+                    .HasConstraintName("FK__Votes__FightId__59063A47");
 
                 entity.HasOne(d => d.Fighter)
                     .WithMany(p => p.Votes)
                     .HasForeignKey(d => d.FighterId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Votes__FighterId__34C8D9D1");
+                    .HasConstraintName("FK__Votes__FighterId__59FA5E80");
             });
 
             modelBuilder.Entity<Weather>(entity =>

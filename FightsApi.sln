@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FightsApi_Test", "FightsApi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FightsApi_Models", "FightsApi_Models\FightsApi_Models.csproj", "{868F2577-2DEB-45C2-B45E-48D91DD0E3ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FightsApi_DbContext", "FightsApi_DbContext\FightsApi_DbContext.csproj", "{CBB2F3F7-C72C-4782-A39C-BA5440755D00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FightsApi_Data", "FightsApi_DbContext\FightsApi_Data.csproj", "{CBB2F3F7-C72C-4782-A39C-BA5440755D00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

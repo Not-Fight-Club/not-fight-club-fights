@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FightsApi_DbContext\FightsApi_DbContext.csproj" />
+    <ProjectReference Include="..\FightsApi_DbContext\FightsApi_Data.csproj" />
     <ProjectReference Include="..\FightsApi_Models\FightsApi_Models.csproj" />
   </ItemGroup>
 
