@@ -20,6 +20,7 @@ using FightsApi_Buisiness.Repositories;
 using FightsApi_Logic.Mappers;
 using FightsApi_Buisiness.Mappers;
 using System.Net.Http;
+using Microsoft.Extensions.Options;
 
 namespace FightsApi
 {
@@ -78,9 +79,9 @@ namespace FightsApi
       //    only using it to get my localhost domains to work properly. This CANNOT make it to production
       //      - Jon B
       // (taken from https://stackoverflow.com/questions/62860290/disable-ssl-certificate-verification-in-default-injected-ihttpclientfactory)
-      services.AddHttpClient("charactersApi", configure =>
+      services.AddHttpClient(Options.DefaultName, configure =>
       {
-        configure.BaseAddress = new Uri(Configuration["CharactersApiURL"]);
+        //configure.BaseAddress = new Uri(Configuration["CharactersApiURL"]);
       }).ConfigurePrimaryHttpMessageHandler(() =>
       {
         return new HttpClientHandler

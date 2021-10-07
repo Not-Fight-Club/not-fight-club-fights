@@ -33,11 +33,11 @@ namespace FightsApi_Buisiness.Repositories
 		public async Task<ViewCharacter> Read(int characterId)
 		{
       // Access microservice for characters
-      //string baseUrl = _config["CharactersApiURL"];
+      string baseUrl = _config["CharactersApiURL"];
       //string endpointURI = $"{baseUrl}/Character/{characterId}";
-      string endpointURI = $"Character/{characterId}";
+      string endpointURI = $"{baseUrl}/Character/{characterId}";
       var request = new HttpRequestMessage(HttpMethod.Get, endpointURI);
-      var client = _clientFactory.CreateClient("charactersApi");
+      var client = _clientFactory.CreateClient();
       _logger.LogInformation($"base address for client api: {client.BaseAddress}");
       var response = await client.SendAsync(request);
       if (response.IsSuccessStatusCode)
