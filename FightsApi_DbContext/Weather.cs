@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FightsApi_Data
+namespace FightsApi_DbContext
 {
-    public partial class Location
+    public partial class Weather
     {
-        public Location()
+        public Weather()
         {
             Fights = new HashSet<Fight>();
         }
 
-        public int LocationId { get; set; }
-        public string Location1 { get; set; }
+        public int WeatherId { get; set; }
+        public string Description { get; set; }
 
         public virtual ICollection<Fight> Fights { get; set; }
     }

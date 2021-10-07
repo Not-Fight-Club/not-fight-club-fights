@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FightsApi_Data
+namespace FightsApi_DbContext
 {
     public partial class Vote
     {

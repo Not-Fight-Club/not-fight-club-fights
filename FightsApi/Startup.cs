@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using FightsApi_Data;
+using FightsApi_DbContext;
 using FightsApi_Models.ViewModels;
 using FightsApi_Buisiness.Interfaces;
 using FightsApi_Buisiness.Repositiories;
