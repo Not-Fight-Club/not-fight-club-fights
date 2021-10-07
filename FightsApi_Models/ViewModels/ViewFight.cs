@@ -24,7 +24,9 @@ namespace FightsApi_Models.ViewModels
       WeatherNavigation = weatherNavigation;
       WinnerNavigation = winnerNavigation;
       LoserNavigation = loserNavigation;
+      
     }
+
     //public Fight()
     //{
     //    Comments = new HashSet<Comment>();

@@ -14,25 +14,27 @@ namespace FightsApi_Test.RepositoryTests.FightsRepoTest
 	[Collection("Repository Tests")]
 	public class FightRepoTest
     {
-
+		    static Guid? z = new Guid();
 			public static IEnumerable<object[]> GetData()
 			{
 			Fight test = new Fight();
-			int? j = test.Location;
-			int? n = test.Weather;
+			
+			int? j = 1;
+			int? n = 1;
+
 			
 				for (var i = 1; i <= 1000; i++)
 				{
-					yield return new object[] { i,  DateTime.Now, DateTime.Now, j, n};
+					yield return new object[] { i, z, DateTime.Now, DateTime.Now, j, n};
 				}
 			}
 
 			[Theory]
 			[MemberData(nameof(GetData))]
-			public async Task Test_RecipeRepo(int id, DateTime startTime, DateTime endTime, int locationId, int weatherId)
+			public async Task Test_FightRepo(int id, Guid creatorId, DateTime startTime, DateTime endTime, int locationId, int weatherId)
 			{
 
-				// set up an in-memory version of TheTofuWarriorsDBContext
+				// set up an in-memory version of NotFightClub
 				using (var mockDbContext = new P3_NotFightClubContext())
 				{
 					// Delete the database if it already exists
@@ -43,7 +45,7 @@ namespace FightsApi_Test.RepositoryTests.FightsRepoTest
 				var fight = new Fight()
 				{
 					FightId = id,
-					//CreatorId = creatorId,
+					CreatorId = creatorId,
 					StartDate = startTime,
 				    EndDate = endTime,
 				    Location = locationId,
@@ -62,7 +64,7 @@ namespace FightsApi_Test.RepositoryTests.FightsRepoTest
 					foreach (var element in fighties)
 					{
 						Assert.Equal(id, fight.FightId);
-						//Assert.Equal(creatorId, fight.CreatorId);
+						Assert.Equal(creatorId, fight.CreatorId);
 						Assert.Equal(startTime, fight.StartDate);
 						Assert.Equal(endTime, fight.EndDate);
 						Assert.Equal(locationId, fight.Location);

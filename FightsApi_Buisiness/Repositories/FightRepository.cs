@@ -38,9 +38,9 @@ namespace FightsApi_Buisiness.Repositiories
 
     public async Task<ViewFight> Read(int obj)
     {
-      Fight fight = await Task.Run(() => _dbContext.Fights.Find(obj));
-
-      return _mapper.ModelToViewModel(fight);
+     Fight fight = await Task.Run(() => _dbContext.Fights.FirstOrDefaultAsync(f => f.FightId == obj));
+     ViewFight viewFight = _mapper.ModelToViewModel(fight);
+     return viewFight;
     }
      public async Task<ViewFight> Read(DateTime startTime)
      {
@@ -55,8 +55,7 @@ namespace FightsApi_Buisiness.Repositiories
       List<Fight> fights = await _dbContext.Fights
         .Include("WeatherNavigation")
         .Include("LocationNavigation")
-        .Include(fight => fight.Fighters)
-        .ThenInclude(fighter => fighter.Votes)
+       
         .ToListAsync();
 
       return _mapper.ModelToViewModel(fights);
@@ -82,7 +81,7 @@ namespace FightsApi_Buisiness.Repositiories
 
             var link = new Fight()
             {
-                Location = obj.Location
+                Weather = obj.Weather
             };
             _dbContext.Fights.Add(link);
             await _dbContext.SaveChangesAsync();
