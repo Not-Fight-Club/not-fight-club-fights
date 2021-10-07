@@ -17,4 +17,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FightsApi_Models\FightsApi_Models.csproj" />
+  </ItemGroup>
+
 </Project>

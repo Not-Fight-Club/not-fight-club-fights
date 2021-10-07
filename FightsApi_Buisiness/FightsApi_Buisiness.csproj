@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FightsApi_DbContext\FightsApi_Data.csproj" />
+    <ProjectReference Include="..\FightsApi_Data\FightsApi_Data.csproj" />
     <ProjectReference Include="..\FightsApi_Models\FightsApi_Models.csproj" />
   </ItemGroup>
 
