@@ -40,7 +40,7 @@ namespace FightsApi
       {
         options.AddPolicy(name: "NotFightClubLocal", builder =>
         {
-          builder.WithOrigins("http://localhost:4200")
+          builder.WithOrigins("http://localhost:4200", "https://localhost:4200")
           .AllowAnyHeader()
           .AllowAnyMethod();
         });
@@ -73,6 +73,8 @@ namespace FightsApi
       services.AddScoped<IMapper<Fighter, ViewFighter>, FighterMapper>();
       services.AddScoped<IRepository<ViewFighter, int>, FighterRepository>();
       services.AddScoped<IMapper<Fight, ViewFight>, FightMapper>();
+      services.AddScoped<IRepository<ViewVote, int>, VoteRepository>();
+      services.AddScoped<IMapper<Vote, ViewVote>, VoteMapper>();
 
       //services.AddHttpClient();
       // Note: The below code will bypass SSL Certificate checking. This is very insecure and I'm
