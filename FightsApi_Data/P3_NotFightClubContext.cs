@@ -28,7 +28,7 @@ namespace FightsApi_Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB; Database = P3_NotFightClub; Trusted_Connection = true;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=P3_NotFightClub;Trusted_Connection=True;");
             }
         }
 
@@ -42,17 +42,19 @@ namespace FightsApi_Data
 
                 entity.Property(e => e.EndDate).HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.Public).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.StartDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.LocationNavigation)
                     .WithMany(p => p.Fights)
                     .HasForeignKey(d => d.Location)
-                    .HasConstraintName("FK__Fight__Location__3D5E1FD2");
+                    .HasConstraintName("FK__Fight__Location__4F7CD00D");
 
                 entity.HasOne(d => d.WeatherNavigation)
                     .WithMany(p => p.Fights)
                     .HasForeignKey(d => d.Weather)
-                    .HasConstraintName("FK__Fight__Weather__3E52440B");
+                    .HasConstraintName("FK__Fight__Weather__5070F446");
             });
 
             modelBuilder.Entity<Fighter>(entity =>
@@ -65,7 +67,7 @@ namespace FightsApi_Data
                     .WithMany(p => p.Fighters)
                     .HasForeignKey(d => d.FightId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Fighter__FightId__412EB0B6");
+                    .HasConstraintName("FK__Fighter__FightId__5441852A");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -87,13 +89,13 @@ namespace FightsApi_Data
                     .WithMany(p => p.Votes)
                     .HasForeignKey(d => d.FightId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Votes__FightId__45F365D3");
+                    .HasConstraintName("FK__Votes__FightId__59063A47");
 
                 entity.HasOne(d => d.Fighter)
                     .WithMany(p => p.Votes)
                     .HasForeignKey(d => d.FighterId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Votes__FighterId__46E78A0C");
+                    .HasConstraintName("FK__Votes__FighterId__59FA5E80");
             });
 
             modelBuilder.Entity<Weather>(entity =>
