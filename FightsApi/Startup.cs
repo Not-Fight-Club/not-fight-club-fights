@@ -38,7 +38,7 @@ namespace FightsApi
       {
         options.AddPolicy(name: "NotFightClubLocal", builder =>
         {
-          builder.WithOrigins("http://localhost:4200")
+          builder.WithOrigins("http://localhost:4200", "https://localhost:4200")
           .AllowAnyHeader()
           .AllowAnyMethod();
         });
