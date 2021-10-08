@@ -10,15 +10,19 @@ using FightsApi_Data;
 
 namespace FightsApi_Buisiness.Repositiories
 {
-  public class FightRepository : IRepository<ViewFight, int>
+  public class FightRepository : IFightRepository
   {
     private readonly P3_NotFightClubContext _dbContext;
     private readonly IMapper<Fight, ViewFight> _mapper;
+    private readonly IRepository<ViewCharacter, int> _characterRepo;
 
-    public FightRepository(IMapper<Fight, ViewFight> mapper, P3_NotFightClubContext dbContext)
+    public FightRepository(IMapper<Fight, ViewFight> mapper, P3_NotFightClubContext dbContext,IRepository<ViewCharacter,int> characterRepo)
     {
       _mapper = mapper;
       _dbContext = dbContext;
+      _characterRepo = characterRepo;
+
+
     }
 
     public async Task<ViewFight> Add(ViewFight obj)
@@ -38,7 +42,8 @@ namespace FightsApi_Buisiness.Repositiories
             return _mapper.ModelToViewModel(fight);
         }
 
-    public async Task<ViewFight> Read(int obj)
+
+		public async Task<ViewFight> Read(int obj)
     {
      Fight fight = await Task.Run(() => _dbContext.Fights.FirstOrDefaultAsync(f => f.FightId == obj));
      ViewFight viewFight = _mapper.ModelToViewModel(fight);
@@ -62,7 +67,7 @@ namespace FightsApi_Buisiness.Repositiories
 
       return _mapper.ModelToViewModel(fights);
     }
-
+  
     public async Task<ViewFight> Update(ViewFight obj)
     {
             var loc = await(from u in _dbContext.Fights where obj.Location == u.Location select u).FirstAsync();
@@ -91,5 +96,29 @@ namespace FightsApi_Buisiness.Repositiories
         }
 
 
+    
+
+    //find all fights by userId
+    public async Task<List<ViewFight>> FindFightsByUserId(Guid userId)
+    {//
+     List<ViewCharacter> allCharacters= await _characterRepo.Read();
+
+      List<int> cIdForUser = allCharacters.Where(cs => cs.UserId == userId).Select(C => C.CharacterId).ToList();
+      List<int> fightIds = await _dbContext.Fighters.Where(f => cIdForUser.Contains(f.CharacterId)).Select(f => f.FightId).ToListAsync();
+
+      
+    List<ViewFight> userFights = await _dbContext.Fights.Where(f =>fightIds.Contains(f.FightId)).Include("WeatherNavigation")
+        .Include("LocationNavigation").Include(f=>f.Fighters)
+        .ThenInclude(fighter => fighter.Votes)
+        .Select(f=> _mapper.ModelToViewModel(f)).ToListAsync();
+      return userFights;
+      //var fights = await _dbContext.Fights.Where(f => f.FightId == userId).Join(_dbContext.Fighters, fid1 => fid)
     }
+
+		public Task<List<ViewFight>> FindFightsByUserId(int userId)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
 }

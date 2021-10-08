@@ -69,7 +69,7 @@ namespace FightsApi
       //services.AddSingleton<IRepository<ViewTrait, int>, TraitRepository>();
       //services.AddSingleton<IRepository<ViewWeapon, int>, WeaponRepository>();
       //services.AddSingleton<IMapper<Weapon, ViewWeapon>, WeaponMapper>();
-      services.AddScoped<IRepository<ViewFight, int>, FightRepository>();
+      services.AddScoped<IFightRepository, FightRepository>();
       services.AddScoped<IMapper<Fighter, ViewFighter>, FighterMapper>();
       services.AddScoped<IRepository<ViewFighter, int>, FighterRepository>();
       services.AddScoped<IMapper<Fight, ViewFight>, FightMapper>();
@@ -92,6 +92,7 @@ namespace FightsApi
           ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, certChain, policyErrors) => true
         };
       });
+
 
 
       services.AddControllers();
