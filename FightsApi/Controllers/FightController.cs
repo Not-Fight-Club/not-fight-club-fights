@@ -50,7 +50,7 @@ namespace FightsApi.Controllers
 
     //list all previous fights for a user
     [HttpGet("/fight/byuser/{id}")]
-    public async Task<ActionResult<List<ViewFight>>> GetFightsByUserId(int id)
+    public async Task<ActionResult<List<ViewFight>>> GetFightsByUserId(Guid id)
     {
       List<ViewFight> userFights = await _fr.FindFightsByUserId(id);
       return Ok(userFights);
