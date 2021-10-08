@@ -49,16 +49,22 @@ namespace FightsApi
       //{
       //    options.UseSqlServer(Configuration.GetConnectionString("local"));
       //});
-      //services.AddDbContext<P2_NotFightClubContext>(options =>
-      //{
-      //    //if db options is already configured, done do anything..
-      //    // otherwise use the Connection string I have in secrets.json
-      //    if (!options.IsConfigured)
-      //    {
-      //        options.UseSqlServer(Configuration.GetConnectionString("local"));
-      //    }
-      //});
-      services.AddDbContext<P3_NotFightClubContext>();
+      services.AddDbContext<P3_NotFightClubContext>(options =>
+      {
+        //if db options is already configured, done do anything..
+        // otherwise use the Connection string I have in secrets.json
+        if (!options.IsConfigured)
+        {
+          Console.WriteLine("Connection strings: ");
+          var sect = Configuration.GetSection("ConnectionStrings");
+          foreach (var s in sect.AsEnumerable())
+          {
+            Console.WriteLine($"Key: {s.Key}, Value: {s.Value}");
+          }
+          options.UseSqlServer(Configuration.GetConnectionString("FightsDB"));
+        }
+      });
+      //services.AddDbContext<P3_NotFightClubContext>();
 
 
       //services.AddSingleton<IRepository<ViewUserInfo, string>, UserRepository>();
