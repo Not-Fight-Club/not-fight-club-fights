@@ -21,34 +21,73 @@ namespace FightsApi_Buisiness.Repositiories
       _dbContext = dbContext;
     }
 
-    public Task<ViewFight> Add(ViewFight obj)
+    public async Task<ViewFight> Add(ViewFight obj)
     {
-      throw new NotImplementedException();
-    }
+            var fight = new Fight()
+            {
+                FightId = obj.FightId,
+                StartDate = obj.StartDate,
+                EndDate = obj.EndDate,
+                Location = obj.Location,
+                Weather = obj.Weather
+            };
+            _dbContext.Fights.Add(fight);
+            await _dbContext.SaveChangesAsync();
+            return _mapper.ModelToViewModel(fight);
+        }
 
     public async Task<ViewFight> Read(int obj)
     {
-      Fight fight = await Task.Run(() => _dbContext.Fights.Find(obj));
-
-      return _mapper.ModelToViewModel(fight);
+     Fight fight = await Task.Run(() => _dbContext.Fights.FirstOrDefaultAsync(f => f.FightId == obj));
+     ViewFight viewFight = _mapper.ModelToViewModel(fight);
+     return viewFight;
     }
+     public async Task<ViewFight> Read(DateTime startTime)
+     {
+       Fight fight = await Task.Run(() => _dbContext.Fights.Find(startTime));
 
-    public async Task<List<ViewFight>> Read()
+       return _mapper.ModelToViewModel(fight);
+     }
+
+        public async Task<List<ViewFight>> Read()
     {
 
       List<Fight> fights = await _dbContext.Fights
         .Include("WeatherNavigation")
         .Include("LocationNavigation")
-        .Include(fight => fight.Fighters)
-        .ThenInclude(fighter => fighter.Votes)
+       
         .ToListAsync();
 
       return _mapper.ModelToViewModel(fights);
     }
 
-    public Task<ViewFight> Update(ViewFight obj)
+    public async Task<ViewFight> Update(ViewFight obj)
     {
-      throw new NotImplementedException();
+            var loc = await(from u in _dbContext.Fights where obj.Location == u.Location select u).FirstAsync();
+            var fight = await(from f in _dbContext.Fights where f.FightId == obj.FightId select f).Include(f => f.Location).FirstAsync();
+
+            var link = new Fight()
+            {
+                Location = obj.Location
+            };
+            _dbContext.Fights.Add(link);
+            await _dbContext.SaveChangesAsync();
+            return _mapper.ModelToViewModel(fight);
     }
-  }
+        public async Task<ViewFight> UpdateWeather(ViewFight obj)
+        {
+            var weather = await (from u in _dbContext.Fights where obj.Weather == u.Weather select u).FirstAsync();
+            var fight = await (from f in _dbContext.Fights where f.FightId == obj.FightId select f).Include(f => f.Weather).FirstAsync();
+
+            var link = new Fight()
+            {
+                Weather = obj.Weather
+            };
+            _dbContext.Fights.Add(link);
+            await _dbContext.SaveChangesAsync();
+            return _mapper.ModelToViewModel(fight);
+        }
+
+
+    }
 }
