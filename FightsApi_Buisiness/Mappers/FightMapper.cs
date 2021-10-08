@@ -11,8 +11,13 @@ namespace FightsApi_Logic.Mappers
 {
   public class FightMapper : IMapper<Fight, ViewFight>
   {
+
     public ViewFight ModelToViewModel(Fight obj)
     {
+      if (obj == null)
+      {
+        return null;
+      }
       ViewFight viewFight = new ViewFight();
       viewFight.FightId = obj.FightId;
     // viewFight.Winner = obj.Winner;
@@ -20,11 +25,14 @@ namespace FightsApi_Logic.Mappers
 
       viewFight.StartDate = obj.StartDate;
       viewFight.EndDate = obj.EndDate;
-    //  viewFight.Result = obj.Result;
+      //  viewFight.Result = obj.Result;
       viewFight.Location = obj.Location;
       viewFight.Weather = obj.Weather;
       viewFight.LocationNavigation = obj.LocationNavigation.Location1;
       viewFight.WeatherNavigation = obj.WeatherNavigation.Description;
+      viewFight.CreatorId = obj.CreatorId;
+      viewFight.PublicFight = obj.Public;
+
       return viewFight;
     }
 
@@ -33,11 +41,11 @@ namespace FightsApi_Logic.Mappers
     {
       Fight fight = new Fight();
       fight.FightId = obj.FightId;
-    //  fight.Winner = obj.Winner;
-    //  fight.Loser = obj.Loser;
+      //  fight.Winner = obj.Winner;
+      //  fight.Loser = obj.Loser;
       fight.StartDate = obj.StartDate;
       fight.EndDate = obj.EndDate;
-    //  fight.Result = obj.Result;
+      //  fight.Result = obj.Result;
       fight.Location = obj.Location;
       fight.Weather = obj.Weather;
 
