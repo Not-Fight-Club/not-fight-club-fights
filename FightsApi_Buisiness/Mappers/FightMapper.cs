@@ -27,6 +27,8 @@ namespace FightsApi_Logic.Mappers
       //  viewFight.Result = obj.Result;
       viewFight.Location = obj.Location;
       viewFight.Weather = obj.Weather;
+      viewFight.CreatorId = obj.CreatorId;
+      viewFight.PublicFight = obj.Public;
 
       return viewFight;
     }
