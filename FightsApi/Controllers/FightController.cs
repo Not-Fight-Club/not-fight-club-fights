@@ -27,6 +27,38 @@ namespace FightsApi.Controllers
       return Ok(fight);
     }
 
+    [HttpPost("/fight/private/{CreateID}/{startDate}/{endDate}")]
+    public async Task<ActionResult<ViewFight>> CreatePrivateFight(string CreateID, DateTime startDate, DateTime endDate)
+    {
+      ViewFight fight = new ViewFight()
+      {
+        Weather = 1,//new Random().Next(1, 10),
+        Location = new Random().Next(1, 10),
+        StartDate = startDate,
+        EndDate = endDate,
+        CreatorId = Guid.Parse(CreateID),
+        PublicFight = false
+      };
+      var fightCreate = await _fr.Add(fight);
+      return Ok(fightCreate);
+    }
+
+    [HttpPost("/fight/public/{CreateID}/{startDate}/{endDate}")]
+    public async Task<ActionResult<ViewFight>> CreatePublicFight(string CreateID, DateTime startDate, DateTime endDate)
+    {
+      ViewFight fight = new ViewFight()
+      {
+        Weather = 1,//new Random().Next(1, 10),
+        Location = new Random().Next(1, 10),
+        StartDate = startDate,
+        EndDate = endDate,
+        CreatorId = Guid.Parse(CreateID),
+        PublicFight = true
+      };
+      var fightCreate = await _fr.Add(fight);
+      return Ok(fightCreate);
+    }
+
 
     [HttpGet("/fight/current")]
     public async Task<ActionResult<ViewFight>> GetCurrent()
