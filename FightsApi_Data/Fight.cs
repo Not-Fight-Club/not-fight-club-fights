@@ -18,7 +18,7 @@ namespace FightsApi_Data
         public DateTime? EndDate { get; set; }
         public int? Location { get; set; }
         public int? Weather { get; set; }
-       // public Guid? CreatorId { get; set; }
+        public Guid? CreatorId { get; set; }
         public bool? Public { get; set; }
 
         public virtual Location LocationNavigation { get; set; }

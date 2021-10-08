@@ -67,7 +67,7 @@ namespace FightsApi_Buisiness.Repositiories
 
       return _mapper.ModelToViewModel(fights);
     }
-
+  
     public async Task<ViewFight> Update(ViewFight obj)
     {
             var loc = await(from u in _dbContext.Fights where obj.Location == u.Location select u).FirstAsync();
@@ -96,7 +96,7 @@ namespace FightsApi_Buisiness.Repositiories
         }
 
 
-    }
+    
 
     //find all fights by userId
     public async Task<List<ViewFight>> FindFightsByUserId(Guid userId)
@@ -121,3 +121,4 @@ namespace FightsApi_Buisiness.Repositiories
 		}
 	}
 
+}
