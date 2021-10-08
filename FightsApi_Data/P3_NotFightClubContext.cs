@@ -42,19 +42,17 @@ namespace FightsApi_Data
 
                 entity.Property(e => e.EndDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Public).HasDefaultValueSql("((0))");
-
                 entity.Property(e => e.StartDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.LocationNavigation)
                     .WithMany(p => p.Fights)
                     .HasForeignKey(d => d.Location)
-                    .HasConstraintName("FK__Fight__Location__4F7CD00D");
+                    .HasConstraintName("FK_Fight_Location");
 
                 entity.HasOne(d => d.WeatherNavigation)
                     .WithMany(p => p.Fights)
                     .HasForeignKey(d => d.Weather)
-                    .HasConstraintName("FK__Fight__Weather__5070F446");
+                    .HasConstraintName("FK_Fight_Weather");
             });
 
             modelBuilder.Entity<Fighter>(entity =>
@@ -67,7 +65,7 @@ namespace FightsApi_Data
                     .WithMany(p => p.Fighters)
                     .HasForeignKey(d => d.FightId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Fighter__FightId__5441852A");
+                    .HasConstraintName("FK_Fighter_Fight");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -89,13 +87,13 @@ namespace FightsApi_Data
                     .WithMany(p => p.Votes)
                     .HasForeignKey(d => d.FightId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Votes__FightId__59063A47");
+                    .HasConstraintName("FK_Votes_Fight");
 
                 entity.HasOne(d => d.Fighter)
                     .WithMany(p => p.Votes)
                     .HasForeignKey(d => d.FighterId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Votes__FighterId__59FA5E80");
+                    .HasConstraintName("FK_Votes_Fighter");
             });
 
             modelBuilder.Entity<Weather>(entity =>
