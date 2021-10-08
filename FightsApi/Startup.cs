@@ -55,12 +55,6 @@ namespace FightsApi
         // otherwise use the Connection string I have in secrets.json
         if (!options.IsConfigured)
         {
-          Console.WriteLine("Connection strings: ");
-          var sect = Configuration.GetSection("ConnectionStrings");
-          foreach (var s in sect.AsEnumerable())
-          {
-            Console.WriteLine($"Key: {s.Key}, Value: {s.Value}");
-          }
           options.UseSqlServer(Configuration.GetConnectionString("FightsDB"));
         }
       });
