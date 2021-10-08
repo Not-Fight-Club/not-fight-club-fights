@@ -52,9 +52,28 @@ namespace FightsApi_Buisiness.Repositories
       }
 		}
 
-		public Task<List<ViewCharacter>> Read()
+		public async Task<List<ViewCharacter>> Read()
 		{
-			throw new NotImplementedException();
+      //get all characters
+      string baseUrl = _config["CharactersApiURL"];
+      //string endpointURI = $"{baseUrl}/Character/{characterId}";
+      string endpointURI = $"{baseUrl}/Character";
+      var request = new HttpRequestMessage(HttpMethod.Get, endpointURI);
+      var client = _clientFactory.CreateClient();
+      _logger.LogInformation($"base address for client api: {client.BaseAddress}");
+      var response = await client.SendAsync(request);
+      if (response.IsSuccessStatusCode)
+      {
+        string responseJson = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<List<ViewCharacter>>(responseJson);
+      }
+      else
+      {
+        _logger.LogError($"Failed request to {endpointURI}: {response}");
+        return null;
+      }
+
+    
 		}
 
 		public Task<ViewCharacter> Update(ViewCharacter obj)

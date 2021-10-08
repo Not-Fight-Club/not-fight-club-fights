@@ -1,4 +1,4 @@
-﻿using FightsApi_DbContext;
+﻿using FightsApi_Data;
 using FightsApi_Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace FightsApi_Buisiness.Interfaces
 public interface IFightRepository: IRepository<ViewFight, int>
 	{
 		//find fights by user ID
-		public Task<List<ViewFight>> FindFightsByUserId(int userId);
+		public Task<List<ViewFight>> FindFightsByUserId(Guid userId);
 
 	}
 }
