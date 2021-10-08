@@ -29,7 +29,9 @@ namespace FightsApi_Buisiness.Repositiories
                 StartDate = obj.StartDate,
                 EndDate = obj.EndDate,
                 Location = obj.Location,
-                Weather = obj.Weather
+                Weather = obj.Weather,
+                Public = obj.PublicFight,
+                CreatorId = obj.CreatorId
             };
             _dbContext.Fights.Add(fight);
             await _dbContext.SaveChangesAsync();
