@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FightsApi_Buisiness.Interfaces;
-using FightsApi_DbContext;
+using FightsApi_Data;
 using FightsApi_Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 

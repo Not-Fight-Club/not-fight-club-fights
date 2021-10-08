@@ -1,6 +1,6 @@
 ﻿using FightsApi_Buisiness.Interfaces;
 using FightsApi_Buisiness.Repositiories;
-using FightsApi_DbContext;
+using FightsApi_Data;
 using FightsApi_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;

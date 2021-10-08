@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FightsApi_Buisiness.Interfaces;
 using FightsApi_Models.ViewModels;
-using FightsApi_DbContext;
+using FightsApi_Data;
 
 namespace FightsApi_Buisiness.Repositiories
 {
