@@ -76,7 +76,12 @@ namespace FightsApi_Buisiness.Repositories
     
 		}
 
-		public Task<ViewCharacter> Update(ViewCharacter obj)
+    public Task<List<ViewCharacter>> ReadByCreatorID(Guid obj)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<ViewCharacter> Update(ViewCharacter obj)
 		{
 			throw new NotImplementedException();
 		}
