@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using FightsApi_Buisiness.Interfaces;
 using FightsApi_Data;
 using FightsApi_Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace FightsApi_Buisiness.Repositories
 {
-  public class VoteRepository : IRepository<ViewVote, int>
+  public class VoteRepository : IVoteRepository
   {
     private readonly P3_NotFightClubContext _dbContext;
     private readonly IMapper<Vote, ViewVote> _mapper;
@@ -38,9 +39,26 @@ namespace FightsApi_Buisiness.Repositories
       throw new NotImplementedException();
     }
 
-    public Task<List<ViewVote>> Read()
+    public async Task<List<ViewVote>> Read()
     {
-      throw new NotImplementedException();
+      List<Vote> votes = await _dbContext.Votes.ToListAsync();
+
+      return _mapper.ModelToViewModel(votes);
+    }
+
+    public async Task<ViewVote[]> ReadbyChoice(int fightId, int fighterId)
+    {
+      List<ViewVote> votes = await Read();
+      List<ViewVote> filteredVotes = new List<ViewVote>();
+
+      foreach(ViewVote v in votes)
+      {
+        if(v.FightId == fightId && v.FighterId == fighterId)
+        {
+          filteredVotes.Add(v);
+        }
+      }
+      return filteredVotes.ToArray();
     }
 
     public Task<ViewVote> Update(ViewVote obj)

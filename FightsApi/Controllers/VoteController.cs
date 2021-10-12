@@ -12,9 +12,9 @@ namespace FightsApi.Controllers
   [ApiController]
   public class VoteController : Controller
   {
-    private readonly IRepository<ViewVote, int> _vr;
+    private readonly IVoteRepository _vr;
 
-    public VoteController(IRepository<ViewVote, int> vr)
+    public VoteController(IVoteRepository vr)
     {
       _vr = vr;
     }
@@ -24,6 +24,13 @@ namespace FightsApi.Controllers
     {
       var newVote = await _vr.Add(vote);
       return Ok(newVote);
+    }
+
+    [HttpGet("/votes/{fightId}/{fighterId}")]
+    public async Task<ActionResult<ViewVote[]>> VotesByChoice(int fightId, int fighterId)
+    {
+      ViewVote[] votes = await _vr.ReadbyChoice(fightId, fighterId);
+      return Ok(votes);
     }
   }
 }
