@@ -75,7 +75,7 @@ namespace FightsApi
       services.AddScoped<IMapper<Fight, ViewFight>, FightMapper>();
       services.AddScoped<IRepository<ViewVote, int>, VoteRepository>();
       services.AddScoped<IMapper<Vote, ViewVote>, VoteMapper>();
-      services.AddScoped<IMapper<Fight, ViewFightCharacter>, CharacterFightMapper>();
+      services.AddScoped<CharacterFightMapper, CharacterFightMapper>();
       services.AddScoped<CharacterRepository, CharacterRepository>();
       //services.AddHttpClient();
       // Note: The below code will bypass SSL Certificate checking. This is very insecure and I'm
