@@ -3,47 +3,44 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- dev_ops
+  - dev_ops
 
 resources:
-- repo: self
+  - repo: self
 
 variables:
-
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '2dbaa9eb-8968-48e1-b597-4b38bdfb1c03'
-  imageRepository: 'notfightclubfights'
-  containerRegistry: 'p3fightclub.azurecr.io'
-  dockerfilePath: '*/Dockerfile'
-  tag: '$(Build.BuildId)'
-  imagePullSecret: 'p3fightclub2028b1d7-auth'
+  dockerRegistryServiceConnection: "2dbaa9eb-8968-48e1-b597-4b38bdfb1c03"
+  imageRepository: "notfightclubfights"
+  containerRegistry: "p3fightclub.azurecr.io"
+  dockerfilePath: "Dockerfile"
+  tag: "$(Build.BuildId)"
+  imagePullSecret: "p3fightclub2028b1d7-auth"
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
-
+  vmImageName: "ubuntu-latest"
 
 stages:
-- stage: Build
-  displayName: Build stage
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+  - stage: Build
+    displayName: Build stage
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - task: Docker@2
+            displayName: Build and push an image to container registry
+            inputs:
+              command: buildAndPush
+              repository: $(imageRepository)
+              dockerfile: $(dockerfilePath)
+              containerRegistry: $(dockerRegistryServiceConnection)
+              tags: |
+                $(tag)
 
-    - upload: manifests
-      artifact: manifests
-
+          - upload: manifests
+            artifact: manifests
 # - stage: Deploy
 #   displayName: Deploy stage
 #   dependsOn: Build
