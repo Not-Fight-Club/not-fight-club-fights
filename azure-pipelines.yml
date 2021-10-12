@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: '2dbaa9eb-8968-48e1-b597-4b38bdfb1c03'
   imageRepository: 'notfightclubfights'
   containerRegistry: 'p3fightclub.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  dockerfilePath: '*/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'p3fightclub2028b1d7-auth'
 
