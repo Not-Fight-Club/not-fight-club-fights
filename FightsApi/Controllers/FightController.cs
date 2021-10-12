@@ -1,5 +1,4 @@
 ﻿using FightsApi_Buisiness.Interfaces;
-using FightsApi_Data;
 using FightsApi_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;

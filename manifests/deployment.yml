@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: notfightclubfights 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notfightclubfights
+  template:
+    metadata:
+      labels:
+        app: notfightclubfights 
+    spec:
+      containers:
+        - name: notfightclubfights 
+          image: p3fightclub.azurecr.io/notfightclubfights
+          ports:
+          - containerPort: 5001
