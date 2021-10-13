@@ -22,15 +22,6 @@ namespace FightsApi_Data
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Vote> Votes { get; set; }
         public virtual DbSet<Weather> Weathers { get; set; }
-     
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-           // if (!optionsBuilder.IsConfigured)
-            {
-
-            }
-        }
-        */
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

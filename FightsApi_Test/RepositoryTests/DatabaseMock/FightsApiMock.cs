@@ -8,11 +8,16 @@ using System.Threading.Tasks;
 
 namespace FightsApi_Test.RepositoryTests.DatabaseMock
 {
-    class FightsApiMock
+  public static class FightsApiMock
+  {
+    private static DbContextOptions<P3_NotFightClubContext> _opts =
+      new DbContextOptionsBuilder<P3_NotFightClubContext>()
+          .UseInMemoryDatabase("NotFightClubDB")
+          .Options;
+
+    public static P3_NotFightClubContext GetDbContext()
     {
-        private static DbContextOptions<P3_NotFightClubContext> _opts =
-        new DbContextOptionsBuilder<P3_NotFightClubContext>()
-            .UseInMemoryDatabase("NotFightClubDB")
-            .Options;
+      return new P3_NotFightClubContext(_opts);
     }
+  }
 }

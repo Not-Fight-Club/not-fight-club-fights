@@ -45,6 +45,10 @@ namespace FightsApi
           .AllowAnyMethod();
         });
       });
+      //services.AddDbContext<ConfigurationContext>(options =>
+      //{
+      //    options.UseSqlServer(Configuration.GetConnectionString("local"));
+      //});
       services.AddDbContext<P3_NotFightClubContext>(options =>
       {
         //if db options is already configured, done do anything..
@@ -54,6 +58,7 @@ namespace FightsApi
           options.UseSqlServer(Configuration.GetConnectionString("FightsDB"));
         }
       });
+      //services.AddDbContext<P3_NotFightClubContext>();
 
 
       //services.AddSingleton<IRepository<ViewUserInfo, string>, UserRepository>();
@@ -64,7 +69,7 @@ namespace FightsApi
       //services.AddSingleton<IRepository<ViewTrait, int>, TraitRepository>();
       //services.AddSingleton<IRepository<ViewWeapon, int>, WeaponRepository>();
       //services.AddSingleton<IMapper<Weapon, ViewWeapon>, WeaponMapper>();
-      services.AddScoped<IRepository<ViewFight, int>, FightRepository>();
+      services.AddScoped<IFightRepository, FightRepository>();
       services.AddScoped<IMapper<Fighter, ViewFighter>, FighterMapper>();
       services.AddScoped<IRepository<ViewFighter, int>, FighterRepository>();
       services.AddScoped<IMapper<Fight, ViewFight>, FightMapper>();
@@ -75,6 +80,8 @@ namespace FightsApi
       services.AddScoped<IMapper<Weather, ViewWeather>, WeatherMapper>();
       services.AddScoped<IMapper<Location, ViewLocation>, LocationMapper>();
 
+      services.AddScoped<CharacterFightMapper, CharacterFightMapper>();
+      services.AddScoped<CharacterRepository, CharacterRepository>();
       //services.AddHttpClient();
       // Note: The below code will bypass SSL Certificate checking. This is very insecure and I'm
       //    only using it to get my localhost domains to work properly. This CANNOT make it to production
@@ -91,6 +98,7 @@ namespace FightsApi
           ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, certChain, policyErrors) => true
         };
       });
+
 
 
       services.AddControllers();

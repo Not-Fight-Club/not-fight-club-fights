@@ -16,8 +16,8 @@ namespace FightsApi_Models.ViewModels
       Weather = weather;
       FightId = fightId;
       Location = location;
-      Winner = winner;
-      Loser = loser;
+      //Winner = winner;
+      //Loser = loser;
       StartDate = date;
       EndDate = date;
       LocationNavigation = locationNavigation;
@@ -35,8 +35,8 @@ namespace FightsApi_Models.ViewModels
     //}
 
     public int FightId { get; set; }
-    public int? Winner { get; set; }
-    public int? Loser { get; set; }
+    //public int? Winner { get; set; }
+    //public int? Loser { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string Result { get; set; }
