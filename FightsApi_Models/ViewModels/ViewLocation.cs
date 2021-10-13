@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FightsApi_Models.ViewModels
 {
-    class ViewLocation
+    public class ViewLocation
     {
         //public Location()
         //{

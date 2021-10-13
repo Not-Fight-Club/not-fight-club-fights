@@ -45,20 +45,15 @@ namespace FightsApi
           .AllowAnyMethod();
         });
       });
-      //services.AddDbContext<ConfigurationContext>(options =>
-      //{
-      //    options.UseSqlServer(Configuration.GetConnectionString("local"));
-      //});
-      //services.AddDbContext<P2_NotFightClubContext>(options =>
-      //{
-      //    //if db options is already configured, done do anything..
-      //    // otherwise use the Connection string I have in secrets.json
-      //    if (!options.IsConfigured)
-      //    {
-      //        options.UseSqlServer(Configuration.GetConnectionString("local"));
-      //    }
-      //});
-      services.AddDbContext<P3_NotFightClubContext>();
+      services.AddDbContext<P3_NotFightClubContext>(options =>
+      {
+        //if db options is already configured, done do anything..
+        // otherwise use the Connection string I have in secrets.json
+        if (!options.IsConfigured)
+        {
+          options.UseSqlServer(Configuration.GetConnectionString("FightsDB"));
+        }
+      });
 
 
       //services.AddSingleton<IRepository<ViewUserInfo, string>, UserRepository>();
@@ -75,6 +70,10 @@ namespace FightsApi
       services.AddScoped<IMapper<Fight, ViewFight>, FightMapper>();
       services.AddScoped<IRepository<ViewVote, int>, VoteRepository>();
       services.AddScoped<IMapper<Vote, ViewVote>, VoteMapper>();
+      services.AddScoped<IRepository<ViewWeather, int>, WeatherRepository>();
+      services.AddScoped<IRepository<ViewLocation, int>, LocationRepository>();
+      services.AddScoped<IMapper<Weather, ViewWeather>, WeatherMapper>();
+      services.AddScoped<IMapper<Location, ViewLocation>, LocationMapper>();
 
       //services.AddHttpClient();
       // Note: The below code will bypass SSL Certificate checking. This is very insecure and I'm
