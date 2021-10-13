@@ -39,8 +39,8 @@ stages:
               tags: |
                 $(tag)
           - script: |
-              docker build -f $(dockerfilePath) --target build -t FightsApi_Test:$(Build.BuildId) . 
-              docker create -ti --name testcontainer FightsApi_Test:$(Build.BuildId) 
+              docker build -f $(dockerfilePath) --target build -t fightsapi_test:$(Build.BuildId) . 
+              docker create -ti --name testcontainer fightsapi_test:$(Build.BuildId) 
               docker cp testcontainer:/src/FightsApi_Test/TestResults/ $(Build.ArtifactStagingDirectory)/testresults 
               docker rm -fv testcontainer
           - task: PublishTestResults@2
