@@ -13,9 +13,9 @@ RUN dotnet restore "FightsApi_Test\FightsApi_Test.csproj"
 COPY . .
 WORKDIR "/src/FightsApi"
 RUN dotnet build "FightsApi.csproj" -c Release -o /app/build
-RUN dotnet build "./FightsApi_Test/FightsApi_Test.csproj" -c Release -o /app/build
+RUN dotnet build "/src/FightsApi_Test/FightsApi_Test.csproj" -c Release -o /app/build
 
-RUN dotnet test "./FightsApi_Test/FightsApi_Test.csproj" --logger "trx;LogFileName=FightsApi_Test.trx" 
+RUN dotnet test "/src/FightsApi_Test/FightsApi_Test.csproj" --logger "trx;LogFileName=FightsApi_Test.trx" 
 
 FROM build AS publish
 RUN dotnet publish "FightsApi.csproj" -c Release -o /app/publish
