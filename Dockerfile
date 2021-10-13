@@ -12,6 +12,8 @@ COPY . .
 WORKDIR "/src/FightsApi"
 RUN dotnet build "FightsApi.csproj" -c Release -o /app/build
 
+RUN dotnet test "FightsApi.csproj" --logger "trx;LogFileName=FightsApi.trx" 
+
 FROM build AS publish
 RUN dotnet publish "FightsApi.csproj" -c Release -o /app/publish
 
