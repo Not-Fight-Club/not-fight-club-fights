@@ -1,6 +1,4 @@
 ﻿using FightsApi_Buisiness.Interfaces;
-using FightsApi_Buisiness.Repositiories;
-using FightsApi_Data;
 using FightsApi_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,11 +13,13 @@ namespace FightsApi.Controllers
   public class FightController : Controller
   {
 
-    private readonly IFightRepository _fr;
+    private readonly IRepository<ViewFight, int> _fr;
+    private readonly IRepository<ViewFighter, int> _fighterrepo;
 
-    public FightController(IFightRepository fr)
+    public FightController(IRepository<ViewFight, int > fr, IRepository<ViewFighter, int> fighterrepo)
     {
       _fr = fr;
+      _fighterrepo = fighterrepo;
     }
 
     [HttpGet("/fight/{id}")]
@@ -28,9 +28,23 @@ namespace FightsApi.Controllers
       ViewFight fight = await _fr.Read(id);
       return Ok(fight);
     }
+    private async Task<List<ViewFighter>> AddFightersToFight(List<ViewCharacter> viewFighters, int fightId )
+    {
+      List<ViewFighter> result = new List<ViewFighter>();
+      foreach(var f in viewFighters)
+      {
+        ViewFighter viewf = new ViewFighter();
+        viewf.FightId = fightId;
+        viewf.CharacterId = f.CharacterId;
+       var saved = await  _fighterrepo.Add(viewf);
+        result.Add(saved);
+
+      }
+      return result;
+    }
 
     [HttpPost("fight/private")]
-    public async Task<ActionResult<ViewFight>> CreatePrivateFight(ViewFight viewFight)
+    public async Task<ActionResult<ViewFight>> CreatePrivateFight(ViewFightCharacter viewFight)
     {
       ViewFight fight = new ViewFight()
       {
@@ -42,11 +56,12 @@ namespace FightsApi.Controllers
         PublicFight = false
       };
       var fightCreate = await _fr.Add(fight);
+      await AddFightersToFight(viewFight.Characters, fightCreate.FightId);
       return Ok(fightCreate);
     }
 
     [HttpPost("fight/public")]
-    public async Task<ActionResult<ViewFight>> CreatePublicFight(ViewFight viewFight)
+    public async Task<ActionResult<ViewFight>> CreatePublicFight(ViewFightCharacter viewFight)
     {
       ViewFight fight = new ViewFight()
       {
@@ -56,8 +71,10 @@ namespace FightsApi.Controllers
         EndDate = viewFight.EndDate,
         CreatorId = viewFight.CreatorId,
         PublicFight = true
+
       };
       var fightCreate = await _fr.Add(fight);
+      await AddFightersToFight(viewFight.Characters, fightCreate.FightId);
       return Ok(fightCreate);
     }
 
@@ -107,21 +124,12 @@ namespace FightsApi.Controllers
       return Ok(fight);
     }
 
-    //list all previous fights 
     [HttpGet("/[Controller]/[action]")]
     public async Task<ActionResult<List<ViewFight>>> All()
     {
       List<ViewFight> fights = await _fr.Read();
       return Ok(fights);
 
-    }
-
-    //list all previous fights for a user
-    [HttpGet("/fight/byuser/{id}")]
-    public async Task<ActionResult<List<ViewFightCharacter>>> GetFightsByUserId(Guid id)
-    {
-      List<ViewFightCharacter> userFights = await _fr.FindFightsByUserId(id);
-      return Ok(userFights);
     }
   }
 }
