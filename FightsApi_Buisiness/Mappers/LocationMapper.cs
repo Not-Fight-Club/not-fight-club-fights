@@ -17,6 +17,7 @@ namespace FightsApi_Buisiness.Mappers
       ViewLocation viewLocation = new ViewLocation();
       if (viewLocation == null) { return null; }
       viewLocation.Location1 = obj.Location1;
+      viewLocation.LocationId = obj.LocationId;
       return viewLocation;
     }
 

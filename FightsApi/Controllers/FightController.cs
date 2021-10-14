@@ -23,29 +23,29 @@ namespace FightsApi.Controllers
       _fighterrepo = fighterrepo;
     }
 
- 
-    private async Task<List<ViewFighter>> AddFightersToFight(List<ViewCharacter> viewFighters, int fightId )
+
+    private async Task<List<ViewFighter>> AddFightersToFight(List<ViewCharacter> viewFighters, int fightId)
     {
       List<ViewFighter> result = new List<ViewFighter>();
-      foreach(var f in viewFighters)
+      foreach (var f in viewFighters)
       {
         ViewFighter viewf = new ViewFighter();
         viewf.FightId = fightId;
         viewf.CharacterId = f.CharacterId;
-       var saved = await  _fighterrepo.Add(viewf);
+        var saved = await _fighterrepo.Add(viewf);
         result.Add(saved);
 
       }
       return result;
     }
 
-    [HttpPost("fight/private")]
+    [HttpPost("/fight/private")]
     public async Task<ActionResult<ViewFight>> CreatePrivateFight(ViewFightCharacter viewFight)
     {
       ViewFight fight = new ViewFight()
       {
-        Weather = 1,//new Random().Next(1, 10),
-        Location = new Random().Next(1, 10),
+        Weather = viewFight.Weather,
+        Location = viewFight.Location,
         StartDate = viewFight.StartDate,
         EndDate = viewFight.EndDate,
         CreatorId = viewFight.CreatorId,
@@ -56,13 +56,13 @@ namespace FightsApi.Controllers
       return Ok(fightCreate);
     }
 
-    [HttpPost("fight/public")]
+    [HttpPost("/fight/public")]
     public async Task<ActionResult<ViewFight>> CreatePublicFight(ViewFightCharacter viewFight)
     {
       ViewFight fight = new ViewFight()
       {
-        Weather = 1,//new Random().Next(1, 10),
-        Location = new Random().Next(1, 10),
+        Weather = viewFight.Weather,
+        Location = viewFight.Location,
         StartDate = viewFight.StartDate,
         EndDate = viewFight.EndDate,
         CreatorId = viewFight.CreatorId,
