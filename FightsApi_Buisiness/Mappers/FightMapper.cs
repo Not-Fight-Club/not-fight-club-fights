@@ -20,13 +20,22 @@ namespace FightsApi_Logic.Mappers
       }
       ViewFight viewFight = new ViewFight();
       viewFight.FightId = obj.FightId;
-      //  viewFight.Winner = obj.Winner;
-      //  viewFight.Loser = obj.Loser;
+    // viewFight.Winner = obj.Winner;
+    //  viewFight.Loser = obj.Loser;
+
       viewFight.StartDate = obj.StartDate;
       viewFight.EndDate = obj.EndDate;
       //  viewFight.Result = obj.Result;
       viewFight.Location = obj.Location;
       viewFight.Weather = obj.Weather;
+      if (obj.LocationNavigation != null)
+      {
+        viewFight.LocationNavigation = obj.LocationNavigation.Location1;
+      }
+      if (obj.WeatherNavigation != null)
+      {
+        viewFight.WeatherNavigation = obj.WeatherNavigation.Description;
+      }
       viewFight.CreatorId = obj.CreatorId;
       viewFight.PublicFight = obj.Public;
 
