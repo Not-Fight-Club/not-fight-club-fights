@@ -11,7 +11,7 @@ namespace FightsApi_Buisiness.Interfaces
 public interface IFightRepository: IRepository<ViewFight, int>
 	{
 		//find fights by user ID
-		public Task<List<ViewFight>> FindFightsByUserId(Guid userId);
+		public Task<List<ViewFightCharacter>> FindFightsByUserId(Guid userId);
 
     /// <summary>
     /// read all items the match CreatorID from a table and return a list of those items
