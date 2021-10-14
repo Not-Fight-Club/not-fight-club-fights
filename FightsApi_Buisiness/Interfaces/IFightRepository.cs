@@ -26,5 +26,7 @@ public interface IFightRepository: IRepository<ViewFight, int>
 
     public Task<List<ViewFight>> ReadByCharacterCreatorID(int obj);
 
+    public Task<ViewFight[]> Ongoing();
+
   }
 }

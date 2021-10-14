@@ -19,7 +19,7 @@ namespace FightsApi.Controllers
       _fr = fr;
     }
 
-    [HttpGet("/current/fighters/{id}")]
+    [HttpGet("/current/fightersByFightID/{id}")]
     public async Task<ActionResult<ViewFighter[]>> GetCurrent(int id)
     {
       ViewFighter[] participants = new ViewFighter[2];

@@ -35,6 +35,8 @@ namespace FightsApi_Buisiness.Repositiories
                 Location = obj.Location,
                 Weather = obj.Weather,
                 Public = obj.PublicFight,
+               // WeatherNavigation = new Weather { WeatherId = int.Parse(obj.Weather.ToString()) },
+               // LocationNavigation = new Location { LocationId = int.Parse(obj.Location.ToString()) },
                 CreatorId = obj.CreatorId
             };
             _dbContext.Fights.Add(fight);
@@ -152,7 +154,23 @@ namespace FightsApi_Buisiness.Repositiories
 
       return _mapper.ModelToViewModel(fights);
     }
-  
+
+    public async Task<ViewFight[]> Ongoing()
+    {
+
+      List<Fight> fights = await _dbContext.Fights.Include("WeatherNavigation").Include("LocationNavigation").ToListAsync();
+      List<ViewFight> filteredFights = new List<ViewFight>();
+      foreach(Fight fight in fights)
+      {
+        if((DateTime.Compare(DateTime.Now, DateTime.Parse(fight.StartDate.ToString())) > 0) && (DateTime.Compare(DateTime.Now, DateTime.Parse(fight.EndDate.ToString())) < 0))
+        {
+          filteredFights.Add(_mapper.ModelToViewModel(fight));
+        }
+      }
+
+      return filteredFights.ToArray();
+    }
+
     public async Task<ViewFight> Update(ViewFight obj)
     {
             var loc = await(from u in _dbContext.Fights where obj.Location == u.Location select u).FirstAsync();
