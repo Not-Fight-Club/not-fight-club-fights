@@ -49,13 +49,98 @@ namespace FightsApi_Buisiness.Repositiories
 
     public async Task<ViewFight> Read(int obj)
     {
-      Fight fight = await Task.Run(() => _dbContext.Fights.FirstOrDefaultAsync(f => f.FightId == obj));
+     Fight fight = await _dbContext.Fights.Include("WeatherNavigation")
+      .Include("LocationNavigation").FirstOrDefaultAsync(f => f.FightId == obj);
       ViewFight viewFight = _mapper.ModelToViewModel(fight);
-      return viewFight;
+     return viewFight;
     }
-    public async Task<ViewFight> Read(DateTime startTime)
+
+    public async Task<List<ViewFight>> ReadByCreatorID(Guid obj, bool past)
     {
-      Fight fight = await Task.Run(() => _dbContext.Fights.Find(startTime));
+      List<Fight> fights = await Task.Run(() => _dbContext.Fights.Where(f => f.CreatorId == obj).Include("WeatherNavigation")
+        .Include("LocationNavigation").ToList());
+      List<ViewFight> viewFights = new List<ViewFight>();
+      foreach (var fight in fights)
+      {
+        ViewFight viewFight = new ViewFight();
+        if(past)
+        {
+          if (DateTime.Compare(DateTime.Now, DateTime.Parse(fight.EndDate.ToString())) < 0)
+          {
+            viewFight = _mapper.ModelToViewModel(fight);
+            viewFights.Add(viewFight);
+          }
+        }
+        else
+        {
+          viewFight = _mapper.ModelToViewModel(fight);
+          viewFights.Add(viewFight);
+        }
+       
+      }
+      return viewFights;
+    }
+      public async Task<List<ViewFight>> ReadByFightType(bool obj)
+      {
+        List<Fight> fights = await Task.Run(() => _dbContext.Fights.Where(f => f.Public == obj).Include("WeatherNavigation")
+        .Include("LocationNavigation").ToList());
+        List<ViewFight> viewFights = new List<ViewFight>();
+        foreach (var fight in fights)
+        {
+          ViewFight viewFight = new ViewFight();
+
+        if (DateTime.Compare(DateTime.Now, DateTime.Parse(fight.EndDate.ToString())) < 0)
+        {
+          viewFight = _mapper.ModelToViewModel(fight);
+          viewFights.Add(viewFight);
+        }
+      }
+
+        return viewFights;
+    }
+
+    public async Task<List<ViewFight>> ReadByCharacterID(int obj)
+    {
+      List<Fighter> fighters = await Task.Run(() => _dbContext.Fighters.Where(f => f.CharacterId == obj).ToList());
+      List<ViewFight> viewFights = new List<ViewFight>();
+      foreach (var fighter in fighters)
+      {
+        ViewFight viewFight = new ViewFight();
+        Fight fight = await Task.Run(() => _dbContext.Fights.Where(f => f.FightId == fighter.FightId).Include("WeatherNavigation")
+      .Include("LocationNavigation").ToList().Last());
+        if (DateTime.Compare(DateTime.Now, DateTime.Parse(fight.EndDate.ToString())) < 0)
+        {
+          viewFight = _mapper.ModelToViewModel(fight);
+          viewFights.Add(viewFight);
+        }
+      }
+
+      return viewFights;
+    }
+    public async Task<List<ViewFight>> ReadByCharacterCreatorID(int obj)
+    {
+      List<ViewCharacter> allCharacters = await _characterRepo.Read();
+
+      ViewCharacter cIdForUser = allCharacters.Where(C => C.CharacterId == obj).Last();
+
+      List<Fight> fights = await Task.Run(() => _dbContext.Fights.Where(f => f.CreatorId == cIdForUser.UserId).ToList());
+      List<ViewFight> viewFights = new List<ViewFight>();
+      foreach (var fight in fights)
+      {
+        ViewFight viewFight = new ViewFight();
+        if (DateTime.Compare(DateTime.Now, DateTime.Parse(fight.EndDate.ToString())) < 0)
+        {
+          viewFight = _mapper.ModelToViewModel(fight);
+          viewFights.Add(viewFight);
+        }
+      }
+
+      return viewFights;
+    }
+
+    public async Task<ViewFight> Read(DateTime startTime)
+     {
+       Fight fight = await Task.Run(() => _dbContext.Fights.Find(startTime));
 
       return _mapper.ModelToViewModel(fight);
     }
@@ -116,10 +201,6 @@ namespace FightsApi_Buisiness.Repositiories
       //var fights = await _dbContext.Fights.Where(f => f.FightId == userId).Join(_dbContext.Fighters, fid1 => fid)
     }
 
-    public Task<List<ViewFight>> FindFightsByUserId(int userId)
-    {
-      throw new NotImplementedException();
-    }
-  }
+	}
 
 }

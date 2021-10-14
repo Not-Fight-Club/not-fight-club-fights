@@ -28,8 +28,14 @@ namespace FightsApi_Logic.Mappers
       //  viewFight.Result = obj.Result;
       viewFight.Location = obj.Location;
       viewFight.Weather = obj.Weather;
-      viewFight.LocationNavigation = obj.LocationNavigation.Location1;
-      viewFight.WeatherNavigation = obj.WeatherNavigation.Description;
+      if (obj.LocationNavigation != null)
+      {
+        viewFight.LocationNavigation = obj.LocationNavigation.Location1;
+      }
+      if (obj.WeatherNavigation != null)
+      {
+        viewFight.WeatherNavigation = obj.WeatherNavigation.Description;
+      }
       viewFight.CreatorId = obj.CreatorId;
       viewFight.PublicFight = obj.Public;
 

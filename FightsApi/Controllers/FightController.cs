@@ -61,6 +61,42 @@ namespace FightsApi.Controllers
       return Ok(fightCreate);
     }
 
+    [HttpGet("/fight/allbyCreatorId/{creatorID}")]
+    public async Task<ActionResult<List<ViewFight>>> GetAllbyCreatorId(Guid creatorID)
+
+    {
+      List<ViewFight> fights = await _fr.ReadByCreatorID(creatorID,true);
+     // ViewFight fight = fights.Last();
+      return Ok(fights);
+    }
+
+    [HttpGet("/fight/allbyFightType/{fighType}")]
+    public async Task<ActionResult<List<ViewFight>>> GetAllbyFightType(bool fighType)
+
+    {
+      List<ViewFight> fights = await _fr.ReadByFightType(fighType);
+      // ViewFight fight = fights.Last();
+      return Ok(fights);
+    }
+
+    [HttpGet("/fight/allbyCharacterID/{characterID}")]
+    public async Task<ActionResult<List<ViewFight>>> GetAllbyCharacterID(int characterID)
+
+    {
+      List<ViewFight> fights = await _fr.ReadByCharacterID(characterID);
+      // ViewFight fight = fights.Last();
+      return Ok(fights);
+    }
+
+    [HttpGet("/fight/allbyCharacterCreatorID/{characterID}")]
+    public async Task<ActionResult<List<ViewFight>>> GetAllbyCharacterCreatorID(int characterID)
+
+    {
+      List<ViewFight> fights = await _fr.ReadByCharacterID(characterID);
+      // ViewFight fight = fights.Last();
+      return Ok(fights);
+    }
+
 
     [HttpGet("/fight/current")]
     public async Task<ActionResult<ViewFight>> GetCurrent()
