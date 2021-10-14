@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FightsApi_Buisiness.Interfaces;
 using FightsApi_Data;
+using FightsApi_Models.Exceptions;
 using FightsApi_Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,20 +24,40 @@ namespace FightsApi_Buisiness.Repositories
 
     public async Task<ViewVote> Add(ViewVote obj)
     {
-      Vote vote = new Vote();
-      vote.FightId = obj.FightId;
-      vote.FighterId = obj.FighterId;
-      vote.UserId = obj.UserId;
+      Fight fight = await _dbContext.Fights.FindAsync(obj.FightId);
 
-      _dbContext.Votes.Add(vote);
-      await _dbContext.SaveChangesAsync();
+      if(fight == null)
+      {
+        throw new FightNullException("The fight you tried to vote for is null");
+      }
+      else if(DateTime.Now < fight.StartDate)
+      {
+        throw new VotingPeriodException("Voting period has not begun");
+      }
+      else if(DateTime.Now > fight.EndDate)
+      {
+        throw new VotingPeriodException("Voting period has closed");
+      }
+      else
+      {
+        Vote vote = new Vote();
+        vote.FightId = obj.FightId;
+        vote.FighterId = obj.FighterId;
+        vote.UserId = obj.UserId;
 
-      return _mapper.ModelToViewModel(vote);
+        _dbContext.Votes.Add(vote);
+        await _dbContext.SaveChangesAsync();
+
+        return _mapper.ModelToViewModel(vote);
+      }
+
     }
 
-    public Task<ViewVote> Read(int obj)
+    public async Task<ViewVote> Read(int obj)
     {
-      throw new NotImplementedException();
+      Vote vote = await _dbContext.Votes.FindAsync(obj);
+
+      return _mapper.ModelToViewModel(vote);
     }
 
     public async Task<List<ViewVote>> Read()
