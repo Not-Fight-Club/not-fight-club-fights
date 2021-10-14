@@ -3,6 +3,7 @@ using FightsApi_Buisiness.Repositiories;
 using FightsApi_Buisiness.Repositories;
 using FightsApi_Data;
 using FightsApi_Logic.Mappers;
+using FightsApi_Models.Exceptions;
 using FightsApi_Models.ViewModels;
 using FightsApi_Test.RepositoryTests.DatabaseMock;
 using Microsoft.EntityFrameworkCore;
@@ -92,7 +93,7 @@ namespace FightsApi_Test.RepositoryTests
         };
 
         Assert.Null(await mockDbContext.Fights.FindAsync(1));
-        Assert.ThrowsAsync<NullReferenceException>(async () => await voterepotest.Add(testVote));
+        await Assert.ThrowsAsync<FightNullException>(async () => await voterepotest.Add(testVote));
       }
     }
 
