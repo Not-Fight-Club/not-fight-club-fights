@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace FightsApi.Controllers
 {
   [Route("api")]
@@ -13,21 +14,16 @@ namespace FightsApi.Controllers
   public class FightController : Controller
   {
 
-    private readonly IRepository<ViewFight, int> _fr;
+    private readonly IFightRepository _fr;
     private readonly IRepository<ViewFighter, int> _fighterrepo;
 
-    public FightController(IRepository<ViewFight, int > fr, IRepository<ViewFighter, int> fighterrepo)
+    public FightController(IFightRepository fr, IRepository<ViewFighter, int> fighterrepo)
     {
       _fr = fr;
       _fighterrepo = fighterrepo;
     }
 
-    [HttpGet("/fight/{id}")]
-    public async Task<ActionResult<ViewFight>> Get(int id)
-    {
-      ViewFight fight = await _fr.Read(id);
-      return Ok(fight);
-    }
+ 
     private async Task<List<ViewFighter>> AddFightersToFight(List<ViewCharacter> viewFighters, int fightId )
     {
       List<ViewFighter> result = new List<ViewFighter>();
@@ -82,8 +78,8 @@ namespace FightsApi.Controllers
     public async Task<ActionResult<List<ViewFight>>> GetAllbyCreatorId(Guid creatorID)
 
     {
-      List<ViewFight> fights = await _fr.ReadByCreatorID(creatorID,true);
-     // ViewFight fight = fights.Last();
+      List<ViewFight> fights = await _fr.ReadByCreatorID(creatorID, true);
+      // ViewFight fight = fights.Last();
       return Ok(fights);
     }
 
@@ -130,6 +126,12 @@ namespace FightsApi.Controllers
       List<ViewFight> fights = await _fr.Read();
       return Ok(fights);
 
+    }
+    [HttpGet("/fight/{id}")]
+    public async Task<ActionResult<ViewFight>> Get(int id)
+    {
+      ViewFight fight = await _fr.Read(id);
+      return Ok(fight);
     }
   }
 }
