@@ -107,6 +107,14 @@ namespace FightsApi.Controllers
       return Ok(fight);
     }
 
+    [HttpGet("/fight/ongoing")]
+    public async Task<ActionResult<ViewFight[]>> GetAllOngoing()
+
+    {
+      ViewFight[] fights = await _fr.Ongoing();
+      return Ok(fights);
+    }
+
     //list all previous fights 
     [HttpGet("/[Controller]/[action]")]
     public async Task<ActionResult<List<ViewFight>>> All()
