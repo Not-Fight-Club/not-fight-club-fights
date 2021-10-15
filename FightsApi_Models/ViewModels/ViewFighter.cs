@@ -12,7 +12,7 @@ namespace FightsApi_Models.ViewModels
         //{
         //    Wagers = new HashSet<Wager>();
         //}
-
+        public bool IsWinner { get; set; }
         public int FighterId { get; set; }
         public int FightId { get; set; }
         public int CharacterId { get; set; }
