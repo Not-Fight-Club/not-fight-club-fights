@@ -57,7 +57,7 @@ namespace FightsApi_Test.RepositoryTests.FightsRepoTest
 
         // TODO: set up a null logger and a mocked htttpClient
         var fightmapper = new FightMapper();
-        var fightrepotest = new FightRepository(fightmapper, mockDbContext);
+        var fightrepotest = new FightRepository(fightmapper, mockDbContext, null, null);
         List<ViewFight> fighties = new List<ViewFight>();
         fighties = await fightrepotest.Read();
 
