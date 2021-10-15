@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using FightsApi_Buisiness.Interfaces;
 using FightsApi_Data;
+using FightsApi_Models.Exceptions;
 using FightsApi_Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace FightsApi_Buisiness.Repositories
 {
-  public class VoteRepository : IRepository<ViewVote, int>
+  public class VoteRepository : IVoteRepository
   {
     private readonly P3_NotFightClubContext _dbContext;
     private readonly IMapper<Vote, ViewVote> _mapper;
@@ -22,25 +24,62 @@ namespace FightsApi_Buisiness.Repositories
 
     public async Task<ViewVote> Add(ViewVote obj)
     {
-      Vote vote = new Vote();
-      vote.FightId = obj.FightId;
-      vote.FighterId = obj.FighterId;
-      vote.UserId = obj.UserId;
+      Fight fight = await _dbContext.Fights.FindAsync(obj.FightId);
 
-      _dbContext.Votes.Add(vote);
-      await _dbContext.SaveChangesAsync();
+      if(fight == null)
+      {
+        throw new FightNullException("The fight you tried to vote for is null");
+      }
+      else if(DateTime.Now < fight.StartDate)
+      {
+        throw new VotingPeriodException("Voting period has not begun");
+      }
+      else if(DateTime.Now > fight.EndDate)
+      {
+        throw new VotingPeriodException("Voting period has closed");
+      }
+      else
+      {
+        Vote vote = new Vote();
+        vote.FightId = obj.FightId;
+        vote.FighterId = obj.FighterId;
+        vote.UserId = obj.UserId;
+
+        _dbContext.Votes.Add(vote);
+        await _dbContext.SaveChangesAsync();
+
+        return _mapper.ModelToViewModel(vote);
+      }
+
+    }
+
+    public async Task<ViewVote> Read(int obj)
+    {
+      Vote vote = await _dbContext.Votes.FindAsync(obj);
 
       return _mapper.ModelToViewModel(vote);
     }
 
-    public Task<ViewVote> Read(int obj)
+    public async Task<List<ViewVote>> Read()
     {
-      throw new NotImplementedException();
+      List<Vote> votes = await _dbContext.Votes.ToListAsync();
+
+      return _mapper.ModelToViewModel(votes);
     }
 
-    public Task<List<ViewVote>> Read()
+    public async Task<ViewVote[]> ReadbyChoice(int fightId, int fighterId)
     {
-      throw new NotImplementedException();
+      List<ViewVote> votes = await Read();
+      List<ViewVote> filteredVotes = new List<ViewVote>();
+
+      foreach(ViewVote v in votes)
+      {
+        if(v.FightId == fightId && v.FighterId == fighterId)
+        {
+          filteredVotes.Add(v);
+        }
+      }
+      return filteredVotes.ToArray();
     }
 
     public Task<ViewVote> Update(ViewVote obj)
