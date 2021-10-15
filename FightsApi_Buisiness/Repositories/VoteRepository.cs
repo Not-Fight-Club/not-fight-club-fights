@@ -82,9 +82,17 @@ namespace FightsApi_Buisiness.Repositories
       return filteredVotes.ToArray();
     }
 
-    public Task<ViewVote> Update(ViewVote obj)
+    public async Task<ViewVote> Update(ViewVote obj)
     {
-      throw new NotImplementedException();
+      Vote vote = (from v in _dbContext.Votes
+                   where v.VoteId == obj.VoteId
+                   select v).FirstOrDefault();
+
+      vote.FighterId = obj.FighterId;
+
+      await _dbContext.SaveChangesAsync();
+
+      return _mapper.ModelToViewModel(vote);
     }
   }
 }
