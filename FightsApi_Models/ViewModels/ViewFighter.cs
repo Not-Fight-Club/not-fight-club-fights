@@ -14,9 +14,9 @@ namespace FightsApi_Models.ViewModels
         //}
         public bool IsWinner { get; set; }
         public int FighterId { get; set; }
-        public int? FightId { get; set; }
-        public int? CharacterId { get; set; }
-        public int? Votes { get; set; }
+        public int FightId { get; set; }
+        public int CharacterId { get; set; }
+        public int Votes { get; set; }
 
         //public virtual Character Character { get; set; }
         //public virtual Fight Fight { get; set; }
