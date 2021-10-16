@@ -38,7 +38,7 @@ namespace FightsApi
     {
       services.AddCors((options) =>
       {
-        options.AddPolicy(name: "NotFightClubLocal", builder =>
+        options.AddPolicy(name: "FightsApiLocal", builder =>
         {
           builder.WithOrigins("http://localhost:4200", "https://localhost:4200")
           .AllowAnyHeader()
@@ -77,6 +77,11 @@ namespace FightsApi
       services.AddScoped<IMapper<Vote, ViewVote>, VoteMapper>();
       services.AddScoped<IVoteRepository, VoteRepository>();
 
+      services.AddScoped<IRepository<ViewWeather, int>, WeatherRepository>();
+      services.AddScoped<IRepository<ViewLocation, int>, LocationRepository>();
+      services.AddScoped<IMapper<Weather, ViewWeather>, WeatherMapper>();
+      services.AddScoped<IMapper<Location, ViewLocation>, LocationMapper>();
+
       services.AddScoped<CharacterFightMapper, CharacterFightMapper>();
       services.AddScoped<CharacterRepository, CharacterRepository>();
       //services.AddHttpClient();
@@ -103,7 +108,7 @@ namespace FightsApi
       //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "NotFightClub_WebAPI", Version = "v1" });
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "FightApi", Version = "v1" });
       });
     }
 
@@ -116,20 +121,18 @@ namespace FightsApi
       {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NotFightClub_WebAPI v1"));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FightApi v1"));
       }
 
 
 
-      app.UseCors("NotFightClubLocal");
+    
 
-      app.UseDefaultFiles();
-      app.UseStaticFiles();
 
       app.UseHttpsRedirection();
 
       app.UseRouting();
-
+      app.UseCors("FightsApiLocal");
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>

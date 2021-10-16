@@ -21,9 +21,17 @@ namespace FightsApi_Buisiness.Repositories
       _mapper = mapper;
     }
 
-    public Task<ViewFighter> Add(ViewFighter obj)
+    public async Task<ViewFighter> Add(ViewFighter obj)
     {
-      throw new NotImplementedException();
+      Fighter newFighter = new Fighter()
+      {
+        CharacterId = obj.CharacterId,
+        FightId = obj.FightId
+      };
+
+      _dbContext.Fighters.Add(newFighter);
+      await _dbContext.SaveChangesAsync();
+      return _mapper.ModelToViewModel(newFighter);
     }
 
     public Task<ViewFighter> Read(int obj)
