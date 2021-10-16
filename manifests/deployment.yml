@@ -16,4 +16,4 @@ spec:
         - name: notfightclubfights 
           image: p3fightclub.azurecr.io/notfightclubfights
           ports:
-          - containerPort: 5001
+          - containerPort: 5000
