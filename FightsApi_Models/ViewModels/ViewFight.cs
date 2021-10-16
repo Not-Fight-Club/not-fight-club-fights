@@ -11,20 +11,22 @@ namespace FightsApi_Models.ViewModels
   {
     public ViewFight() { }
 
-    public ViewFight(int? weather, int fightId, int? location, int? winner, int? loser, DateTime? date, string locationNavigation, string weatherNavigation, string winnerNavigation, string loserNavigation)
+    public ViewFight(int? weather, int fightId, int? location, int? winner, int? loser, DateTime? date, string locationNavigation, string weatherNavigation, string winnerNavigation, string loserNavigation, bool publicFight)
     {
       Weather = weather;
       FightId = fightId;
       Location = location;
-      Winner = winner;
-      Loser = loser;
+      //Winner = winner;
+      //Loser = loser;
       StartDate = date;
       EndDate = date;
       LocationNavigation = locationNavigation;
       WeatherNavigation = weatherNavigation;
       WinnerNavigation = winnerNavigation;
       LoserNavigation = loserNavigation;
+      PublicFight = publicFight;
     }
+
     //public Fight()
     //{
     //    Comments = new HashSet<Comment>();
@@ -33,13 +35,16 @@ namespace FightsApi_Models.ViewModels
     //}
 
     public int FightId { get; set; }
-    public int? Winner { get; set; }
-    public int? Loser { get; set; }
+    //public int? Winner { get; set; }
+    //public int? Loser { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string Result { get; set; }
     public int? Location { get; set; }
     public int? Weather { get; set; }
+    public Guid? CreatorId { get; set; }
+
+    public bool? PublicFight { get; set; }
 
     public string WeatherNavigation { get; set; }
     public string LocationNavigation { get; set; }

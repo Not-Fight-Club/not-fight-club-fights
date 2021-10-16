@@ -17,8 +17,9 @@ namespace FightsApi_Buisiness.Mappers
       viewFighter.FighterId = obj.FighterId;
       viewFighter.FightId = obj.FightId;
       viewFighter.CharacterId = obj.CharacterId;
-    //  viewFighter.Votes = obj.Votes;
+      //  viewFighter.Votes = obj.Votes;
 
+      viewFighter.IsWinner = obj.IsWinner;
       return viewFighter;
     }
 
@@ -42,7 +43,8 @@ namespace FightsApi_Buisiness.Mappers
         f.FighterId = obj[i].FighterId;
         f.FightId = obj[i].FightId;
         f.CharacterId = obj[i].CharacterId;
-    //    f.Votes = obj[i].Votes;
+        //    f.Votes = obj[i].Votes;
+        f.IsWinner = obj[i].IsWinner;
         fighters.Add(f);
       }
 

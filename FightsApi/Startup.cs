@@ -38,9 +38,9 @@ namespace FightsApi
     {
       services.AddCors((options) =>
       {
-        options.AddPolicy(name: "NotFightClubLocal", builder =>
+        options.AddPolicy(name: "FightsApiLocal", builder =>
         {
-          builder.WithOrigins("http://localhost:4200")
+          builder.WithOrigins("http://localhost:4200", "https://localhost:4200")
           .AllowAnyHeader()
           .AllowAnyMethod();
         });
@@ -49,16 +49,16 @@ namespace FightsApi
       //{
       //    options.UseSqlServer(Configuration.GetConnectionString("local"));
       //});
-      //services.AddDbContext<P2_NotFightClubContext>(options =>
-      //{
-      //    //if db options is already configured, done do anything..
-      //    // otherwise use the Connection string I have in secrets.json
-      //    if (!options.IsConfigured)
-      //    {
-      //        options.UseSqlServer(Configuration.GetConnectionString("local"));
-      //    }
-      //});
-      services.AddDbContext<P3_NotFightClubContext>();
+      services.AddDbContext<P3_NotFightClubContext>(options =>
+      {
+        //if db options is already configured, done do anything..
+        // otherwise use the Connection string I have in secrets.json
+        if (!options.IsConfigured)
+        {
+          options.UseSqlServer(Configuration.GetConnectionString("FightsDB"));
+        }
+      });
+      //services.AddDbContext<P3_NotFightClubContext>();
 
 
       //services.AddSingleton<IRepository<ViewUserInfo, string>, UserRepository>();
@@ -69,11 +69,21 @@ namespace FightsApi
       //services.AddSingleton<IRepository<ViewTrait, int>, TraitRepository>();
       //services.AddSingleton<IRepository<ViewWeapon, int>, WeaponRepository>();
       //services.AddSingleton<IMapper<Weapon, ViewWeapon>, WeaponMapper>();
-      services.AddScoped<IRepository<ViewFight, int>, FightRepository>();
+      services.AddScoped<IFightRepository, FightRepository>();
       services.AddScoped<IMapper<Fighter, ViewFighter>, FighterMapper>();
       services.AddScoped<IRepository<ViewFighter, int>, FighterRepository>();
       services.AddScoped<IMapper<Fight, ViewFight>, FightMapper>();
+      //services.AddScoped<IRepository<ViewVote, int>, VoteRepository>();
+      services.AddScoped<IMapper<Vote, ViewVote>, VoteMapper>();
+      services.AddScoped<IVoteRepository, VoteRepository>();
 
+      services.AddScoped<IRepository<ViewWeather, int>, WeatherRepository>();
+      services.AddScoped<IRepository<ViewLocation, int>, LocationRepository>();
+      services.AddScoped<IMapper<Weather, ViewWeather>, WeatherMapper>();
+      services.AddScoped<IMapper<Location, ViewLocation>, LocationMapper>();
+
+      services.AddScoped<CharacterFightMapper, CharacterFightMapper>();
+      services.AddScoped<CharacterRepository, CharacterRepository>();
       //services.AddHttpClient();
       // Note: The below code will bypass SSL Certificate checking. This is very insecure and I'm
       //    only using it to get my localhost domains to work properly. This CANNOT make it to production
@@ -92,12 +102,13 @@ namespace FightsApi
       });
 
 
+
       services.AddControllers();
      // services.AddControllers().AddNewtonsoftJson(options =>
       //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "NotFightClub_WebAPI", Version = "v1" });
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "FightApi", Version = "v1" });
       });
     }
 
@@ -110,20 +121,18 @@ namespace FightsApi
       {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NotFightClub_WebAPI v1"));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FightApi v1"));
       }
 
 
 
-      app.UseCors("NotFightClubLocal");
+    
 
-      app.UseDefaultFiles();
-      app.UseStaticFiles();
 
       app.UseHttpsRedirection();
 
       app.UseRouting();
-
+      app.UseCors("FightsApiLocal");
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
