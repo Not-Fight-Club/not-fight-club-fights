@@ -3,9 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>768b613b-da51-4781-95f1-316a2a6b81dd</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/4ba1cdd3-e665-4687-b57e-fdcac557a869/resourceGroups/p3_fight_club/providers/microsoft.insights/components/p3_fight_club_applicationinsights</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
       <PrivateAssets>all</PrivateAssets>
