@@ -11,7 +11,7 @@ namespace FightsApi_Models.ViewModels
     public int VoteId { get; set; }
     public int FightId { get; set; }
     public int FighterId { get; set; }
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
 
   }
 }

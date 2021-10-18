@@ -38,7 +38,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         Fight testFight = new Fight()
@@ -90,7 +90,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         Assert.Null(await mockDbContext.Fights.FindAsync(1));
@@ -116,7 +116,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         await mockDbContext.Votes.AddAsync(expected);
@@ -149,7 +149,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         Vote expected1 = new Vote()
@@ -157,7 +157,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 2,
           FightId = 1,
           FighterId = 1,
-          UserId = 2
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8E")
         };
 
         Vote expected2 = new Vote()
@@ -165,7 +165,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 3,
           FightId = 1,
           FighterId = 2,
-          UserId = 3
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8F")
         };
 
         List<Vote> expected = new List<Vote>();
@@ -206,7 +206,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         Vote expected = new Vote()
@@ -214,7 +214,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 2,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         ViewVote newVote = new ViewVote()
@@ -222,7 +222,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 2,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         await mockDbContext.Votes.AddAsync(oldVote);
@@ -236,6 +236,95 @@ namespace FightsApi_Test.RepositoryTests
         Assert.Equal(expected.FightId, actual.FightId);
         Assert.Equal(expected.FighterId, actual.FighterId);
         Assert.Equal(expected.UserId, actual.UserId);
+      }
+    }
+
+    [Fact]
+    public async void ReadByChoice_Test()
+    {
+      using (var mockDbContext = FightsApiMock.GetDbContext())
+      {
+        // Delete the database if it already exists
+        mockDbContext.Database.EnsureDeleted();
+        // Re-make the database
+        mockDbContext.Database.EnsureCreated();
+
+        var votemapper = new VoteMapper();
+        var voterepotest = new VoteRepository(votemapper, mockDbContext);
+
+        Vote expected0 = new Vote()
+        {
+          VoteId = 1,
+          FightId = 1,
+          FighterId = 1,
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
+        };
+
+        Vote expected1 = new Vote()
+        {
+          VoteId = 2,
+          FightId = 1,
+          FighterId = 1,
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8E")
+        };
+
+        Vote expected2 = new Vote()
+        {
+          VoteId = 3,
+          FightId = 1,
+          FighterId = 2,
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8F")
+        };
+
+        Vote expected3 = new Vote()
+        {
+          VoteId = 4,
+          FightId = 1,
+          FighterId = 2,
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-1055C2319A8D")
+        };
+
+        Vote expected4 = new Vote()
+        {
+          VoteId = 5,
+          FightId = 1,
+          FighterId = 1,
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0155C2319A8D")
+        };
+
+        List<Vote> votes = new List<Vote>();
+        votes.Add(expected0);
+        votes.Add(expected1);
+        votes.Add(expected2);
+        votes.Add(expected3);
+        votes.Add(expected4);
+
+
+        await mockDbContext.Votes.AddRangeAsync(votes);
+        await mockDbContext.SaveChangesAsync();
+
+        ViewVote[] expectedArray1 = { votemapper.ModelToViewModel(expected0), votemapper.ModelToViewModel(expected1), votemapper.ModelToViewModel(expected4) };
+        ViewVote[] expectedArray2 = { votemapper.ModelToViewModel(expected2), votemapper.ModelToViewModel(expected3) };
+
+        ViewVote[] actualArray1 = await voterepotest.ReadbyChoice(1,1);
+        ViewVote[] actualArray2 = await voterepotest.ReadbyChoice(1,2);
+
+
+        for (int i = 0; i < expectedArray1.Length; i++)
+        {
+          Assert.Equal(expectedArray1[i].VoteId, actualArray1[i].VoteId);
+          Assert.Equal(expectedArray1[i].FightId, actualArray1[i].FightId);
+          Assert.Equal(expectedArray1[i].FighterId, actualArray1[i].FighterId);
+          Assert.Equal(expectedArray1[i].UserId, actualArray1[i].UserId);
+        }
+
+        for (int i = 0; i < expectedArray2.Length; i++)
+        {
+          Assert.Equal(expectedArray2[i].VoteId, actualArray2[i].VoteId);
+          Assert.Equal(expectedArray2[i].FightId, actualArray2[i].FightId);
+          Assert.Equal(expectedArray2[i].FighterId, actualArray2[i].FighterId);
+          Assert.Equal(expectedArray2[i].UserId, actualArray2[i].UserId);
+        }
       }
     }
   }
