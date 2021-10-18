@@ -38,7 +38,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         Fight testFight = new Fight()
@@ -90,7 +90,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         Assert.Null(await mockDbContext.Fights.FindAsync(1));
@@ -116,7 +116,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         await mockDbContext.Votes.AddAsync(expected);
@@ -149,7 +149,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         Vote expected1 = new Vote()
@@ -157,7 +157,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 2,
           FightId = 1,
           FighterId = 1,
-          UserId = 2
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8E")
         };
 
         Vote expected2 = new Vote()
@@ -165,7 +165,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 3,
           FightId = 1,
           FighterId = 2,
-          UserId = 3
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8F")
         };
 
         List<Vote> expected = new List<Vote>();
@@ -206,7 +206,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         Vote expected = new Vote()
@@ -214,7 +214,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 2,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         ViewVote newVote = new ViewVote()
@@ -222,7 +222,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 2,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         await mockDbContext.Votes.AddAsync(oldVote);
@@ -257,7 +257,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 1,
           FightId = 1,
           FighterId = 1,
-          UserId = 1
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8D")
         };
 
         Vote expected1 = new Vote()
@@ -265,7 +265,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 2,
           FightId = 1,
           FighterId = 1,
-          UserId = 2
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8E")
         };
 
         Vote expected2 = new Vote()
@@ -273,7 +273,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 3,
           FightId = 1,
           FighterId = 2,
-          UserId = 3
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0055C2319A8F")
         };
 
         Vote expected3 = new Vote()
@@ -281,7 +281,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 4,
           FightId = 1,
           FighterId = 2,
-          UserId = 4
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-1055C2319A8D")
         };
 
         Vote expected4 = new Vote()
@@ -289,7 +289,7 @@ namespace FightsApi_Test.RepositoryTests
           VoteId = 5,
           FightId = 1,
           FighterId = 1,
-          UserId = 5
+          UserId = Guid.Parse("5CDF3AE3-C74D-46F7-A271-0155C2319A8D")
         };
 
         List<Vote> votes = new List<Vote>();
