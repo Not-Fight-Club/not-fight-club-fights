@@ -1,12 +1,11 @@
 ﻿using FightsApi_Buisiness.Interfaces;
-using FightsApi_Buisiness.Repositiories;
-using FightsApi_Data;
 using FightsApi_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace FightsApi.Controllers
 {
@@ -16,48 +15,62 @@ namespace FightsApi.Controllers
   {
 
     private readonly IFightRepository _fr;
+    private readonly IRepository<ViewFighter, int> _fighterrepo;
 
-    public FightController(IFightRepository fr)
+    public FightController(IFightRepository fr, IRepository<ViewFighter, int> fighterrepo)
     {
       _fr = fr;
+      _fighterrepo = fighterrepo;
     }
 
-    [HttpGet("/fight/{id}")]
-    public async Task<ActionResult<ViewFight>> Get(int id)
+
+    private async Task<List<ViewFighter>> AddFightersToFight(List<ViewCharacter> viewFighters, int fightId)
     {
-      ViewFight fight = await _fr.Read(id);
-      return Ok(fight);
+      List<ViewFighter> result = new List<ViewFighter>();
+      foreach (var f in viewFighters)
+      {
+        ViewFighter viewf = new ViewFighter();
+        viewf.FightId = fightId;
+        viewf.CharacterId = f.CharacterId;
+        var saved = await _fighterrepo.Add(viewf);
+        result.Add(saved);
+
+      }
+      return result;
     }
 
-    [HttpPost("/fight/private/{CreateID}/{startDate}/{endDate}")]
-    public async Task<ActionResult<ViewFight>> CreatePrivateFight(string CreateID, DateTime startDate, DateTime endDate)
+    [HttpPost("/fight/private")]
+    public async Task<ActionResult<ViewFight>> CreatePrivateFight(ViewFightCharacter viewFight)
     {
       ViewFight fight = new ViewFight()
       {
-        Weather = 1,//new Random().Next(1, 10),
-        Location = new Random().Next(1, 10),
-        StartDate = startDate,
-        EndDate = endDate,
-        CreatorId = Guid.Parse(CreateID),
+        Weather = viewFight.Weather,
+        Location = viewFight.Location,
+        StartDate = viewFight.StartDate,
+        EndDate = viewFight.EndDate,
+        CreatorId = viewFight.CreatorId,
         PublicFight = false
       };
       var fightCreate = await _fr.Add(fight);
+      await AddFightersToFight(viewFight.Characters, fightCreate.FightId);
       return Ok(fightCreate);
     }
 
-    [HttpPost("/fight/public/{CreateID}/{startDate}/{endDate}")]
-    public async Task<ActionResult<ViewFight>> CreatePublicFight(string CreateID, DateTime startDate, DateTime endDate)
+    [HttpPost("/fight/public")]
+    public async Task<ActionResult<ViewFight>> CreatePublicFight(ViewFightCharacter viewFight)
     {
       ViewFight fight = new ViewFight()
       {
-        Weather = 1,//new Random().Next(1, 10),
-        Location = new Random().Next(1, 10),
-        StartDate = startDate,
-        EndDate = endDate,
-        CreatorId = Guid.Parse(CreateID),
+        Weather = viewFight.Weather,
+        Location = viewFight.Location,
+        StartDate = viewFight.StartDate,
+        EndDate = viewFight.EndDate,
+        CreatorId = viewFight.CreatorId,
         PublicFight = true
+
       };
       var fightCreate = await _fr.Add(fight);
+      await AddFightersToFight(viewFight.Characters, fightCreate.FightId);
       return Ok(fightCreate);
     }
 
@@ -65,8 +78,8 @@ namespace FightsApi.Controllers
     public async Task<ActionResult<List<ViewFight>>> GetAllbyCreatorId(Guid creatorID)
 
     {
-      List<ViewFight> fights = await _fr.ReadByCreatorID(creatorID,true);
-     // ViewFight fight = fights.Last();
+      List<ViewFight> fights = await _fr.ReadByCreatorID(creatorID, true);
+      // ViewFight fight = fights.Last();
       return Ok(fights);
     }
 
@@ -107,6 +120,14 @@ namespace FightsApi.Controllers
       return Ok(fight);
     }
 
+    [HttpGet("/fight/ongoing")]
+    public async Task<ActionResult<ViewFight[]>> GetAllOngoing()
+
+    {
+      ViewFight[] fights = await _fr.Ongoing();
+      return Ok(fights);
+    }
+
     //list all previous fights 
     [HttpGet("/[Controller]/[action]")]
     public async Task<ActionResult<List<ViewFight>>> All()
@@ -115,13 +136,11 @@ namespace FightsApi.Controllers
       return Ok(fights);
 
     }
-
-    //list all previous fights for a user
-    [HttpGet("/fight/byuser/{id}")]
-    public async Task<ActionResult<List<ViewFightCharacter>>> GetFightsByUserId(Guid id)
+    [HttpGet("/fight/{id}")]
+    public async Task<ActionResult<ViewFight>> Get(int id)
     {
-      List<ViewFightCharacter> userFights = await _fr.FindFightsByUserId(id);
-      return Ok(userFights);
+      ViewFight fight = await _fr.Read(id);
+      return Ok(fight);
     }
   }
 }

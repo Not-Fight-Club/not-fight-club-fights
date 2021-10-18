@@ -11,45 +11,44 @@ using FightsApi_Buisiness.Interfaces;
 namespace FightsApi_Buisiness.Repositories
 {
 	public class WeatherRepository : IWeatherRepository
-	{
-		private readonly P3_NotFightClubContext _dbContext;
-    //get all weather from db to pick a random weather
-    public WeatherRepository(P3_NotFightClubContext dbContext)
-		{
+  {
+    private readonly P3_NotFightClubContext _dbContext;
+    private readonly IMapper<Weather, ViewWeather> _mapper;
+
+    public WeatherRepository(IMapper<Weather, ViewWeather> mapper, P3_NotFightClubContext dbContext)
+    {
+      _mapper = mapper;
       _dbContext = dbContext;
     }
 
-		public Task<ViewWeather> Add(ViewWeather obj)
-		{
-			throw new NotImplementedException();
-		}
-
-		public async Task<List<ViewWeather>> Read()
+    public Task<ViewWeather> Add(ViewWeather obj)
     {
-      List<ViewWeather> allWeather = await _dbContext.Weathers
-        .Select(w => new ViewWeather
-        {
-          WeatherId = w.WeatherId,
-          Description = w.Description
-        }).ToListAsync();
-      return allWeather;
+      throw new NotImplementedException();
     }
-		public async Task <ViewWeather> ReadRandom()
-		{
-			List<ViewWeather> weathers = await this.Read();
+
+    public Task<ViewWeather> Read(int obj)
+    {
+      throw new NotImplementedException();
+    }
+
+    public async Task<ViewWeather> ReadRandom()
+    { 
+      List<ViewWeather> weathers = await this.Read();
 			Random random = new Random();
 			int id = random.Next(0, weathers.Count() - 1);
 			return weathers[id];
-		}
+    }
 
-		public Task<ViewWeather> Read(int obj)
-		{
-			throw new NotImplementedException();
-		}
+    public async Task<List<ViewWeather>> Read()
+    {
+      List<Weather> weather = await _dbContext.Weathers.ToListAsync();
 
-		public Task<ViewWeather> Update(ViewWeather obj)
-		{
-			throw new NotImplementedException();
-		}
-	}
+      return _mapper.ModelToViewModel(weather);
+    }
+
+    public Task<ViewWeather> Update(ViewWeather obj)
+    {
+      throw new NotImplementedException();
+    }
+  }
 }

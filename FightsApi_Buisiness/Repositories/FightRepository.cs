@@ -99,6 +99,22 @@ namespace FightsApi_Buisiness.Repositiories
         return viewFights;
     }
 
+    public async Task<ViewFight[]> Ongoing()
+    {
+
+      List<Fight> fights = await _dbContext.Fights.Include("WeatherNavigation").Include("LocationNavigation").ToListAsync();
+      List<ViewFight> filteredFights = new List<ViewFight>();
+      foreach (Fight fight in fights)
+      {
+        if ((DateTime.Compare(DateTime.Now, DateTime.Parse(fight.StartDate.ToString())) > 0) && (DateTime.Compare(DateTime.Now, DateTime.Parse(fight.EndDate.ToString())) < 0))
+        {
+          filteredFights.Add(_mapper.ModelToViewModel(fight));
+        }
+      }
+
+      return filteredFights.ToArray();
+    }
+
     public async Task<List<ViewFight>> ReadByCharacterID(int obj)
     {
       List<Fighter> fighters = await Task.Run(() => _dbContext.Fighters.Where(f => f.CharacterId == obj).ToList());

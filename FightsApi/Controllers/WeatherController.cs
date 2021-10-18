@@ -11,20 +11,22 @@ namespace FightsApi.Controllers
 {
 	[Route("api")]
 	[ApiController]
-	public class WeatherController : Controller
-	{
+  public class WeatherController : Controller
+  {
 		private IWeatherRepository _wr;
 		public WeatherController(IWeatherRepository wr)
-		{
+    {
 			_wr = wr;
-		}
+    }
 
-		[HttpGet("[Controller]/")]
-		public async Task<ActionResult<List<ViewWeather>>> All()
-		{
+
+
+    [HttpGet("/[Controller]/[action]")]
+    public async Task<ActionResult<List<ViewWeather>>> All()
+    {
 			List<ViewWeather> weathers = await _wr.Read();
 			return Ok(weathers);
 		}
 
-	}
-}
+    }
+  }
