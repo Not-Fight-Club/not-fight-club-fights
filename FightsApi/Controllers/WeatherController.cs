@@ -28,7 +28,7 @@ namespace FightsApi.Controllers
     }
 
     [HttpPost("/weather")]
-    public async Task<ActionResult<ViewWeather>> AddLocation([FromBody] ViewWeather viewWeather)
+    public async Task<ActionResult<ViewWeather>> AddWeather([FromBody] ViewWeather viewWeather)
     {
       if (!ModelState.IsValid) return BadRequest("Invalid data.");
       //call to repository to add trait
