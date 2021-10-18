@@ -29,7 +29,8 @@ FightId int not null identity (1,1) constraint PK_Fight primary key,
 [Location] int constraint FK_Fight_Location foreign key references [Location](LocationId),
 Weather int constraint FK_Fight_Weather foreign key references Weather(WeatherId),
 CreatorId uniqueidentifier null, -- if fight was created by a user, this is the userId
-[Public] bit NOT NULL default 0
+[Public] bit NOT NULL default 0,
+Finished bit NOT NULL default 0
 );
 
 CREATE TABLE Fighter(
@@ -46,3 +47,23 @@ CREATE TABLE Votes(
 	UserId int not null, -- USER ID of voter
 	CONSTRAINT Votes_UNQ UNIQUE (FightId, UserId)
 );
+
+
+INSERT INTO [Location] ([Location])
+VALUES
+('Palm Beach'),
+('LAS VEGAS'),
+('Subway'),
+('Kathmandu');
+
+INSERT INTO Weather ([Description])
+VALUES
+('Super sunny'),
+('Hailstorm'),
+('Tornado');
+
+SELECT * FROM Fight;
+
+SELECT * FROM Fighter WHERE FightId>12;
+
+SELECT * FROM Votes;
