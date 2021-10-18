@@ -24,6 +24,7 @@ namespace FightsApi.Controllers
     [HttpGet("/[Controller]/[action]")]
     public async Task<ActionResult<List<ViewWeather>>> All()
     {
+     
 			List<ViewWeather> weathers = await _wr.Read();
 			return Ok(weathers);
 		}
