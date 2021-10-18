@@ -34,8 +34,8 @@ namespace FightsApi.Controllers
       //call to repository to add trait
       //return the result
       //Console.WriteLine(viewTrait);
-      var newTrait = await _lo.Add(viewLocation);
-      return Ok(newTrait);
+      var newLocation = await _lo.Add(viewLocation);
+      return Ok(newLocation);
     }
 
 

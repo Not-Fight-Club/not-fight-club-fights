@@ -8,11 +8,11 @@ namespace FightsApi_Models.ViewModels
 {
   public class ViewLocation
   {
-    public ViewLocation()
-    {
-      //  Fights = new HashSet<Fight>();
-    }
-
+    // public Location()
+    // {
+    //  Fights = new HashSet<Fight>();
+    // }
+    public ViewLocation() { }
     public ViewLocation(int locationId, string location1)
     {
       LocationId = locationId;
