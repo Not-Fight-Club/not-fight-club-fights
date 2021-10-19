@@ -10,9 +10,9 @@ namespace FightsApi.Controllers
 {
   public class LocationController : Controller
   {
-    private readonly IRepository<ViewLocation, int> _lo;
+    private readonly IRepository<ViewLocation, string> _lo;
 
-    public LocationController(IRepository<ViewLocation, int> lo)
+    public LocationController(IRepository<ViewLocation, string> lo)
     {
       _lo = lo;
     }
@@ -25,6 +25,13 @@ namespace FightsApi.Controllers
       List<ViewLocation> location = await _lo.Read();
       return Ok(location);
 
+    }
+
+    [HttpGet("/[Controller]/{locationString}")]
+    public async Task<ActionResult<List<ViewLocation>>> Get(string locationString)
+    {
+      ViewLocation location = await _lo.Read(locationString);
+      return Ok(location);
     }
 
     [HttpPost("/location")]

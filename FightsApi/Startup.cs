@@ -78,7 +78,7 @@ namespace FightsApi
       services.AddScoped<IVoteRepository, VoteRepository>();
 
       //services.AddScoped<IRepository<ViewWeather, int>, WeatherRepository>();
-      services.AddScoped<IRepository<ViewLocation, int>, LocationRepository>();
+      services.AddScoped<IRepository<ViewLocation, string>, LocationRepository>();
       services.AddScoped<IMapper<Weather, ViewWeather>, WeatherMapper>();
       services.AddScoped<IMapper<Location, ViewLocation>, LocationMapper>();
 

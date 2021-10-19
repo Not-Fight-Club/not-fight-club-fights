@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FightsApi_Buisiness.Interfaces
 {
-	public interface IWeatherRepository:IRepository<ViewWeather, int>
+	public interface IWeatherRepository:IRepository<ViewWeather, string>
 	{
 		public Task <ViewWeather> ReadRandom();
 	}
