@@ -26,5 +26,18 @@ namespace FightsApi.Controllers
       return Ok(location);
 
     }
+
+    [HttpPost("/location")]
+    public async Task<ActionResult<ViewLocation>> AddLocation([FromBody] ViewLocation viewLocation)
+    {
+      if (!ModelState.IsValid) return BadRequest("Invalid data.");
+      //call to repository to add trait
+      //return the result
+      //Console.WriteLine(viewTrait);
+      var newLocation = await _lo.Add(viewLocation);
+      return Ok(newLocation);
+    }
+
+
   }
 }

@@ -6,16 +6,23 @@ using System.Threading.Tasks;
 
 namespace FightsApi_Models.ViewModels
 {
-    public class ViewLocation
+  public class ViewLocation
+  {
+    // public Location()
+    // {
+    //  Fights = new HashSet<Fight>();
+    // }
+    public ViewLocation() { }
+    public ViewLocation(int locationId, string location1)
     {
-        //public Location()
-        //{
-        //    Fights = new HashSet<Fight>();
-        //}
-
-        public int LocationId { get; set; }
-        public string Location1 { get; set; }
-
-        //public virtual ICollection<Fight> Fights { get; set; }
+      LocationId = locationId;
+      Location1 = location1;
     }
+
+
+    public int LocationId { get; set; }
+    public string Location1 { get; set; }
+
+    //public virtual ICollection<Fight> Fights { get; set; }
+  }
 }

@@ -29,5 +29,15 @@ namespace FightsApi.Controllers
 			return Ok(weathers);
 		}
 
+    [HttpPost("/weather")]
+    public async Task<ActionResult<ViewWeather>> AddWeather([FromBody] ViewWeather viewWeather)
+    {
+      if (!ModelState.IsValid) return BadRequest("Invalid data.");
+      //call to repository to add trait
+      //return the result
+      //Console.WriteLine(viewTrait);
+      var newWeather = await _wr.Add(viewWeather);
+      return Ok(newWeather);
     }
   }
+}

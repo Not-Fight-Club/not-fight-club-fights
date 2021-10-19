@@ -21,9 +21,13 @@ namespace FightsApi_Buisiness.Repositories
       _dbContext = dbContext;
     }
 
-    public Task<ViewWeather> Add(ViewWeather obj)
+    public async Task<ViewWeather> Add(ViewWeather viewWeather)
     {
-      throw new NotImplementedException();
+      Weather weather = _mapper.ViewModelToModel(viewWeather);
+      _dbContext.Database.ExecuteSqlInterpolated($"Insert into Weather(description) values({weather.Description})");
+      _dbContext.SaveChanges();
+      Weather newWeather = await _dbContext.Weathers.FromSqlInterpolated($"select * from Weather where Description = {weather.Description}").FirstOrDefaultAsync();
+      return _mapper.ModelToViewModel(newWeather);
     }
 
     public Task<ViewWeather> Read(int obj)

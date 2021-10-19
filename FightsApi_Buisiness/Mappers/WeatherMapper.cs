@@ -28,7 +28,10 @@ namespace FightsApi_Buisiness.Mappers
 
     public Weather ViewModelToModel(ViewWeather obj)
     {
-      throw new NotImplementedException();
+      Weather weather = new Weather();
+      weather.Description = obj.Description;
+
+      return weather;
     }
 
     public List<Weather> ViewModelToModel(List<ViewWeather> obj)
