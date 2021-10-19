@@ -20,6 +20,7 @@ namespace FightsApi
   public class BetsWorker : BackgroundService
   {
 
+    // TODO: set this as appropriate
     private int DELAY_BETWEEN_CYCLES_MILLIS = 7000;
 
     private IHttpClientFactory _httpFactory;
@@ -38,6 +39,12 @@ namespace FightsApi
       _config = config;
       _logger = logger;
       _services = services;
+
+      int configDelay;
+      if (int.TryParse(_config["PAYOUTS_DELAY"], out configDelay))
+      {
+        DELAY_BETWEEN_CYCLES_MILLIS = configDelay;
+      }
     }
 
     private int CompareByEndDate(Fight f1, Fight f2)
@@ -56,6 +63,13 @@ namespace FightsApi
       }
     }
 
+    /// <summary>
+    /// Get payouts from bets service
+    /// </summary>
+    /// <param name="f">fight being bet on</param>
+    /// <param name="winner">winning fighter for fight</param>
+    /// <param name="cancelToken"></param>
+    /// <returns></returns>
     private async Task<List<ViewUser>> GetPayouts(Fight f, Fighter winner, CancellationToken cancelToken)
     {
       string baseUrl = _config["apiUrl:bets"];
@@ -77,6 +91,12 @@ namespace FightsApi
 
     }
 
+    /// <summary>
+    /// Send payouts to User service to update users' bucks totals
+    /// </summary>
+    /// <param name="payouts">List of updates to make</param>
+    /// <param name="cancelToken"></param>
+    /// <returns></returns>
     private async Task<bool> SendPayouts(List<ViewUser> payouts, CancellationToken cancelToken)
     {
       string baseUrl = _config["apiUrl:users"];
@@ -90,6 +110,11 @@ namespace FightsApi
       return response.IsSuccessStatusCode;
     }
 
+    /// <summary>
+    /// Implementation of background task
+    /// </summary>
+    /// <param name="stoppingToken"></param>
+    /// <returns></returns>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
       _logger.LogInformation("Starting bets payout background task");
@@ -114,6 +139,14 @@ namespace FightsApi
         }
       }
     }
+
+    /// <summary>
+    /// Get payouts for fights that have ended from bets service and
+    /// update users' bucks totals using user service
+    /// </summary>
+    /// <param name="context">dbContext for fightsDb</param>
+    /// <param name="stoppingToken"></param>
+    /// <returns></returns>
     private async Task DoPayouts(P3_NotFightClubContext context, CancellationToken stoppingToken)
     {
       // get all fights
