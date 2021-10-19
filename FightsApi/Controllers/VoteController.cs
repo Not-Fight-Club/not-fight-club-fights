@@ -41,5 +41,11 @@ namespace FightsApi.Controllers
       int tally = votes.Length;
       return Ok(tally);
     }
+
+    [HttpGet("/uservote/{fightId}/{userId}")]
+    public async Task<ActionResult<bool>> CheckUserVote(int fightId, Guid userId)
+    {
+      return await _vr.CheckUserVote(fightId, userId);
+    }
   }
 }

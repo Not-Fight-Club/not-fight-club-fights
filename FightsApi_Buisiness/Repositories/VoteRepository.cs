@@ -82,6 +82,19 @@ namespace FightsApi_Buisiness.Repositories
       return filteredVotes.ToArray();
     }
 
+    public async Task<bool> CheckUserVote(int fightId, Guid userId)
+    {
+      var result = await (from v in _dbContext.Votes
+                    where v.FightId == fightId && v.UserId == userId
+                    select v).FirstOrDefaultAsync();
+
+      if(result != null)
+      {
+        return true;
+      }
+      else { return false; }
+    }
+
     public async Task<ViewVote> Update(ViewVote obj)
     {
       Vote vote = (from v in _dbContext.Votes
