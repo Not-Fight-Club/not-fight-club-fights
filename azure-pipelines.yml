@@ -32,6 +32,11 @@ stages:
           vmImage: $(vmImageName)
         steps:
         - task: DotNetCoreCLI@2
+          displayName: 'dotnet restore'
+          inputs:
+            command: 'restore'
+            feedsToUse: 'select'
+        - task: DotNetCoreCLI@2
           displayName: 'dotnet build'
           inputs:
             command: 'build'
@@ -39,6 +44,7 @@ stages:
           displayName: 'dotnet test'
           inputs:
             command: 'test'
+            arguments: '--collect "Code coverage"'
 
   - stage: Build
     displayName: Build stage
