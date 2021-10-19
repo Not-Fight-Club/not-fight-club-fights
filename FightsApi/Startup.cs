@@ -77,13 +77,14 @@ namespace FightsApi
       services.AddScoped<IMapper<Vote, ViewVote>, VoteMapper>();
       services.AddScoped<IVoteRepository, VoteRepository>();
 
-      services.AddScoped<IRepository<ViewWeather, int>, WeatherRepository>();
+      //services.AddScoped<IRepository<ViewWeather, int>, WeatherRepository>();
       services.AddScoped<IRepository<ViewLocation, int>, LocationRepository>();
       services.AddScoped<IMapper<Weather, ViewWeather>, WeatherMapper>();
       services.AddScoped<IMapper<Location, ViewLocation>, LocationMapper>();
 
       services.AddScoped<CharacterFightMapper, CharacterFightMapper>();
       services.AddScoped<CharacterRepository, CharacterRepository>();
+      services.AddScoped<IWeatherRepository, WeatherRepository>();
       //services.AddHttpClient();
       // Note: The below code will bypass SSL Certificate checking. This is very insecure and I'm
       //    only using it to get my localhost domains to work properly. This CANNOT make it to production
