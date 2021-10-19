@@ -55,6 +55,8 @@ stages:
 
   - stage: Build
     displayName: Build stage
+    dependsOn: Test
+    condition: succeededOrFailed()
     jobs:
       - job: Build
         displayName: Build
