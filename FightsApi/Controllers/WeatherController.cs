@@ -1,4 +1,5 @@
 ﻿using FightsApi_Buisiness.Interfaces;
+using FightsApi_Buisiness.Repositories;
 using FightsApi_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,13 +9,14 @@ using System.Threading.Tasks;
 
 namespace FightsApi.Controllers
 {
+	[Route("api")]
+	[ApiController]
   public class WeatherController : Controller
   {
-    private readonly IRepository<ViewWeather, int> _we;
-
-    public WeatherController(IRepository<ViewWeather, int> we)
+		private IWeatherRepository _wr;
+		public WeatherController(IWeatherRepository wr)
     {
-      _we = we;
+			_wr = wr;
     }
 
 
@@ -22,10 +24,10 @@ namespace FightsApi.Controllers
     [HttpGet("/[Controller]/[action]")]
     public async Task<ActionResult<List<ViewWeather>>> All()
     {
-      List<ViewWeather> weather = await _we.Read();
-      return Ok(weather);
+     
+			List<ViewWeather> weathers = await _wr.Read();
+			return Ok(weathers);
+		}
 
     }
   }
-}
-
