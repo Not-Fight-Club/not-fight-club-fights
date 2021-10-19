@@ -30,9 +30,12 @@ namespace FightsApi_Buisiness.Repositories
       return _mapper.ModelToViewModel(newWeather);
     }
 
-    public Task<ViewWeather> Read(int obj)
+    public async Task<ViewWeather> Read(string obj)
     {
-      throw new NotImplementedException();
+      Weather newWeather = await _dbContext.Weathers.FromSqlInterpolated($"select * from Weather where Description = {obj}").FirstOrDefaultAsync();
+      if (newWeather == null)
+        return null;
+      return _mapper.ModelToViewModel(newWeather);
     }
 
     public async Task<ViewWeather> ReadRandom()

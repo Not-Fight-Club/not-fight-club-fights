@@ -29,6 +29,13 @@ namespace FightsApi.Controllers
 			return Ok(weathers);
 		}
 
+    [HttpGet("/[Controller]/{weatherString}")]
+    public async Task<ActionResult<ViewWeather>> Get(string weatherString)
+    {
+      ViewWeather weather = await _wr.Read(weatherString);
+      return Ok(weather);
+    }
+
     [HttpPost("/weather")]
     public async Task<ActionResult<ViewWeather>> AddWeather([FromBody] ViewWeather viewWeather)
     {
