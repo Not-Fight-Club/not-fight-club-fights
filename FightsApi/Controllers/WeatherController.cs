@@ -29,8 +29,6 @@ namespace FightsApi.Controllers
 			return Ok(weathers);
 		}
 
-    }
-
     [HttpPost("/weather")]
     public async Task<ActionResult<ViewWeather>> AddWeather([FromBody] ViewWeather viewWeather)
     {
@@ -38,7 +36,8 @@ namespace FightsApi.Controllers
       //call to repository to add trait
       //return the result
       //Console.WriteLine(viewTrait);
-      var newWeather = await _we.Add(viewWeather);
+      var newWeather = await _wr.Add(viewWeather);
       return Ok(newWeather);
     }
   }
+}
