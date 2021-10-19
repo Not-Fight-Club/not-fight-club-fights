@@ -58,8 +58,9 @@ namespace FightsApi
 
     private async Task<List<ViewUser>> GetPayouts(Fight f, Fighter winner, CancellationToken cancelToken)
     {
-      string baseUrl = _config["bets"];
+      string baseUrl = _config["apiUrl:bets"];
       string endpointURI = $"{baseUrl}/api/wagers/{f.FightId}/{winner.FighterId}";
+      _logger.LogInformation($"Getting payouts from url '{endpointURI}'");
       var request = new HttpRequestMessage(HttpMethod.Get, endpointURI);
       var client = _httpFactory.CreateClient();
       _logger.LogInformation($"base address for bets api: {client.BaseAddress}");
@@ -78,8 +79,9 @@ namespace FightsApi
 
     private async Task<bool> SendPayouts(List<ViewUser> payouts, CancellationToken cancelToken)
     {
-      string baseUrl = _config["users"];
+      string baseUrl = _config["apiUrl:users"];
       string endpointURI = $"{baseUrl}/UpdateTotalList";
+      _logger.LogInformation($"Sending payouts to url '{endpointURI}'");
       var request = new HttpRequestMessage(HttpMethod.Post, endpointURI);
       var jsonBody = JsonConvert.SerializeObject(payouts);
       request.Content = new StringContent(jsonBody, System.Text.Encoding.UTF8, "application/json");
@@ -90,13 +92,23 @@ namespace FightsApi
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+      _logger.LogInformation("Starting bets payout background task");
       using (var scope = _services.CreateScope())
       {
         using (var context = scope.ServiceProvider.GetRequiredService<P3_NotFightClubContext>())
         {
           while (!stoppingToken.IsCancellationRequested)
           {
-            await DoPayouts(context, stoppingToken);
+            _logger.LogInformation("Running payouts checker");
+            try
+            {
+              await DoPayouts(context, stoppingToken);
+            }
+            catch (Exception e)
+            {
+              _logger.LogError($"Error encountered processing fight payouts: {e}");
+            }
+            _logger.LogInformation($"Finished payouts checker. Waiting {DELAY_BETWEEN_CYCLES_MILLIS} milliseconds");
             await Task.Delay(DELAY_BETWEEN_CYCLES_MILLIS, stoppingToken);
           }
         }
@@ -115,9 +127,11 @@ namespace FightsApi
 
       if (fights.Count < 1)
       {
+        _logger.LogInformation("No fights found for payouts service processing");
         // no fights found, no processing to do
         return;
       }
+      _logger.LogInformation($"Checking {fights.Count} fights for payout info");
       foreach(var f in fights)
       {
         var nextFightTime = f.EndDate;
@@ -127,19 +141,38 @@ namespace FightsApi
           // NOTE: with a better implementation, we could have this process wait for the EndDate,
           //      but the way it is now, we want to keep looking for fights that could be added
           //      before the next fight ends
+          _logger.LogInformation($"Next fight ends at {nextFightTime}");
           break;
         }
+        _logger.LogInformation($"Processing fight by id {f.FightId}");
         // update data in fight and payout bets
         var fighters = await (from fi in context.Fighters where fi.FightId == f.FightId select fi).ToListAsync(stoppingToken);
         var winningFighter = await context.Fighters.FromSqlRaw(
-          "SELECT TOP 1 f.* From Fighter f" +
-          "INNER JOIN Votes v ON f.FighterId = v.FighterId AND v.FightId = {0}" +
-          "GROUP BY f.FighterId" +
-          "ORDER BY Count(v.VoteId)", f.FightId).FirstAsync(stoppingToken);
+          "SELECT * FROM Fighter WHERE FighterId = ( " +
+            "SELECT TOP(1) f.FighterId " +
+            "FROM Fighter f " +
+            "INNER JOIN Votes v " +
+            "ON f.FighterId = v.FighterId AND v.FightId = {0} " +
+            "GROUP BY f.FighterId " +
+            "ORDER BY Count(v.VoteId) DESC " +
+          ")",
+          f.FightId
+          )
+          .AsTracking()
+          .FirstOrDefaultAsync(stoppingToken);
+        if (winningFighter == null)
+        {
+          _logger.LogInformation($"No winning fighter found for fight {f.FightId}");
+          continue;
+        }
+        _logger.LogInformation($"Winning fighter {winningFighter.FighterId} found for fight {f.FightId}");
         winningFighter.IsWinner = true;
         var payoutsForUsers = await GetPayouts(f, winningFighter, stoppingToken);
+        _logger.LogInformation($"Got info on {payoutsForUsers.Count} bets that will pay out");
+        _logger.LogInformation("Sending payments to users service...");
         if (await SendPayouts(payoutsForUsers, stoppingToken))
         {
+          _logger.LogInformation("Payments successful");
           f.Finished = true;
           await context.SaveChangesAsync();
         }
