@@ -35,7 +35,7 @@ namespace FightsApi_Buisiness.Repositories
       // Access microservice for characters
       string baseUrl = _config["apiUrl:characters"];
       //string endpointURI = $"{baseUrl}/Character/{characterId}";
-      string endpointURI = $"{baseUrl}/Character/{characterId}";
+      string endpointURI = $"{baseUrl}/api/Character/{characterId}";
       var request = new HttpRequestMessage(HttpMethod.Get, endpointURI);
       var client = _clientFactory.CreateClient();
       _logger.LogInformation($"base address for client api: {client.BaseAddress}");
@@ -57,7 +57,7 @@ namespace FightsApi_Buisiness.Repositories
       //get all characters
       string baseUrl = _config["apiUrl:characters"];
       //string endpointURI = $"{baseUrl}/Character/{characterId}";
-      string endpointURI = $"{baseUrl}/Character";
+      string endpointURI = $"{baseUrl}/api/Character";
       var request = new HttpRequestMessage(HttpMethod.Get, endpointURI);
       var client = _clientFactory.CreateClient();
       _logger.LogInformation($"base address for client api: {client.BaseAddress}");
