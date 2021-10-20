@@ -16,11 +16,14 @@ namespace FightsApi.Controllers
 
     private readonly IFightRepository _fr;
     private readonly IRepository<ViewFighter, int> _fighterrepo;
+    private readonly IWeatherRepository _wr;
 
-    public FightController(IFightRepository fr, IRepository<ViewFighter, int> fighterrepo)
+    public FightController(IFightRepository fr, IRepository<ViewFighter, int> fighterrepo, IWeatherRepository wr)
     {
       _fr = fr;
       _fighterrepo = fighterrepo;
+      _wr = wr;
+
     }
 
 
@@ -42,6 +45,10 @@ namespace FightsApi.Controllers
     [HttpPost("/fight/private")]
     public async Task<ActionResult<ViewFight>> CreatePrivateFight(ViewFightCharacter viewFight)
     {
+      if(viewFight.Weather == 0)
+			{
+        viewFight.Weather = (await _wr.ReadRandom()).WeatherId;
+			}
       ViewFight fight = new ViewFight()
       {
         Weather = viewFight.Weather,
@@ -59,6 +66,10 @@ namespace FightsApi.Controllers
     [HttpPost("/fight/public")]
     public async Task<ActionResult<ViewFight>> CreatePublicFight(ViewFightCharacter viewFight)
     {
+      if (viewFight.Weather == 0)
+      {
+        viewFight.Weather = (await _wr.ReadRandom()).WeatherId;
+      }
       ViewFight fight = new ViewFight()
       {
         Weather = viewFight.Weather,
