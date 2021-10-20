@@ -38,10 +38,10 @@ namespace FightsApi.Controllers
       }
       return result;
     }
-
+    
     [HttpPost("fight/private")]
     public async Task<ActionResult<ViewFight>> CreatePrivateFight(ViewFightCharacter viewFight)
-    {
+    { 
       ViewFight fight = new ViewFight()
       {
         Weather = 1,//new Random().Next(1, 10),
@@ -52,7 +52,16 @@ namespace FightsApi.Controllers
         PublicFight = false
       };
       var fightCreate = await _fr.Add(fight);
-      await AddFightersToFight(viewFight.Characters, fightCreate.FightId);
+      if (fight.StartDate < fight.EndDate)
+      {
+       
+        await AddFightersToFight(viewFight.Characters, fightCreate.FightId);
+       
+      }
+      else
+      {
+        Console.WriteLine("Start Date must be < than EndDate");
+      }
       return Ok(fightCreate);
     }
 
@@ -70,7 +79,16 @@ namespace FightsApi.Controllers
 
       };
       var fightCreate = await _fr.Add(fight);
-      await AddFightersToFight(viewFight.Characters, fightCreate.FightId);
+      if (fight.StartDate < fight.EndDate)
+      {
+
+        await AddFightersToFight(viewFight.Characters, fightCreate.FightId);
+
+      }
+      else
+      {
+        Console.WriteLine("Start Date must be < than EndDate");
+      }
       return Ok(fightCreate);
     }
 
