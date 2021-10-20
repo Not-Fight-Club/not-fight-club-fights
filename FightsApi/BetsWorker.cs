@@ -102,7 +102,7 @@ namespace FightsApi
       string baseUrl = _config["apiUrl:users"];
       string endpointURI = $"{baseUrl}/UpdateTotalList";
       _logger.LogInformation($"Sending payouts to url '{endpointURI}'");
-      var request = new HttpRequestMessage(HttpMethod.Post, endpointURI);
+      var request = new HttpRequestMessage(HttpMethod.Put, endpointURI);
       var jsonBody = JsonConvert.SerializeObject(payouts);
       request.Content = new StringContent(jsonBody, System.Text.Encoding.UTF8, "application/json");
       var client = _httpFactory.CreateClient();
