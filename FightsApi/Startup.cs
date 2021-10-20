@@ -75,15 +75,16 @@ namespace FightsApi
       services.AddScoped<IMapper<Fight, ViewFight>, FightMapper>();
       //services.AddScoped<IRepository<ViewVote, int>, VoteRepository>();
       services.AddScoped<IMapper<Vote, ViewVote>, VoteMapper>();
-      services.AddScoped<IRepository<ViewWeather, int>, WeatherRepository>();
-      services.AddScoped<IRepository<ViewLocation, int>, LocationRepository>();
+      services.AddScoped<IVoteRepository, VoteRepository>();
+
+      //services.AddScoped<IRepository<ViewWeather, int>, WeatherRepository>();
+      services.AddScoped<IRepository<ViewLocation, string>, LocationRepository>();
       services.AddScoped<IMapper<Weather, ViewWeather>, WeatherMapper>();
       services.AddScoped<IMapper<Location, ViewLocation>, LocationMapper>();
 
-      services.AddScoped<IVoteRepository, VoteRepository>();
-
       services.AddScoped<CharacterFightMapper, CharacterFightMapper>();
       services.AddScoped<CharacterRepository, CharacterRepository>();
+      services.AddScoped<IWeatherRepository, WeatherRepository>();
       //services.AddHttpClient();
       // Note: The below code will bypass SSL Certificate checking. This is very insecure and I'm
       //    only using it to get my localhost domains to work properly. This CANNOT make it to production
@@ -110,7 +111,8 @@ namespace FightsApi
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "FightApi", Version = "v1" });
       });
-    }
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
+        }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)

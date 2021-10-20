@@ -13,10 +13,11 @@ namespace FightsApi_Buisiness.Mappers
   {
     public ViewLocation ModelToViewModel(Location obj)
     {
-      
+
       ViewLocation viewLocation = new ViewLocation();
       if (viewLocation == null) { return null; }
       viewLocation.Location1 = obj.Location1;
+      viewLocation.LocationId = obj.LocationId;
       return viewLocation;
     }
 
@@ -27,7 +28,10 @@ namespace FightsApi_Buisiness.Mappers
 
     public Location ViewModelToModel(ViewLocation obj)
     {
-      throw new NotImplementedException();
+      Location location = new Location();
+      location.Location1 = obj.Location1;
+
+      return location;
     }
 
     public List<Location> ViewModelToModel(List<ViewLocation> obj)

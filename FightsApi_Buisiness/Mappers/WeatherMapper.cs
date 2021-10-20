@@ -10,24 +10,28 @@ using System.Threading.Tasks;
 
 namespace FightsApi_Buisiness.Mappers
 {
- public class WeatherMapper : IMapper<Weather, ViewWeather>
+  public class WeatherMapper : IMapper<Weather, ViewWeather>
   {
     public ViewWeather ModelToViewModel(Weather obj)
     {
       if (obj == null) { return null; }
-        ViewWeather viewWeather = new ViewWeather();
-        viewWeather.Description = obj.Description;
+      ViewWeather viewWeather = new ViewWeather();
+      viewWeather.Description = obj.Description;
+      viewWeather.WeatherId = obj.WeatherId;
       return viewWeather;
     }
 
     public List<ViewWeather> ModelToViewModel(List<Weather> obj)
     {
-      return obj.ConvertAll(ModelToViewModel); 
+      return obj.ConvertAll(ModelToViewModel);
     }
 
     public Weather ViewModelToModel(ViewWeather obj)
     {
-      throw new NotImplementedException();
+      Weather weather = new Weather();
+      weather.Description = obj.Description;
+
+      return weather;
     }
 
     public List<Weather> ViewModelToModel(List<ViewWeather> obj)

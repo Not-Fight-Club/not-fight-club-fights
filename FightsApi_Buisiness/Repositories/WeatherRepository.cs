@@ -1,16 +1,16 @@
-﻿using FightsApi_Buisiness.Interfaces;
+﻿using FightsApi_Data;
+using FightsApi_Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FightsApi_Models.ViewModels;
-using FightsApi_Data;
 using Microsoft.EntityFrameworkCore;
+using FightsApi_Buisiness.Interfaces;
 
 namespace FightsApi_Buisiness.Repositories
 {
-  public class WeatherRepository : IRepository<ViewWeather, int>
+	public class WeatherRepository : IWeatherRepository
   {
     private readonly P3_NotFightClubContext _dbContext;
     private readonly IMapper<Weather, ViewWeather> _mapper;
@@ -21,14 +21,29 @@ namespace FightsApi_Buisiness.Repositories
       _dbContext = dbContext;
     }
 
-    public Task<ViewWeather> Add(ViewWeather obj)
+    public async Task<ViewWeather> Add(ViewWeather viewWeather)
     {
-      throw new NotImplementedException();
+      Weather weather = _mapper.ViewModelToModel(viewWeather);
+      _dbContext.Database.ExecuteSqlInterpolated($"Insert into Weather(description) values({weather.Description})");
+      _dbContext.SaveChanges();
+      Weather newWeather = await _dbContext.Weathers.FromSqlInterpolated($"select * from Weather where Description = {weather.Description}").FirstOrDefaultAsync();
+      return _mapper.ModelToViewModel(newWeather);
     }
 
-    public Task<ViewWeather> Read(int obj)
+    public async Task<ViewWeather> Read(string obj)
     {
-      throw new NotImplementedException();
+      Weather newWeather = await _dbContext.Weathers.FromSqlInterpolated($"select * from Weather where Description = {obj}").FirstOrDefaultAsync();
+      if (newWeather == null)
+        return null;
+      return _mapper.ModelToViewModel(newWeather);
+    }
+
+    public async Task<ViewWeather> ReadRandom()
+    { 
+      List<ViewWeather> weathers = await this.Read();
+			Random random = new Random();
+			int id = random.Next(0, weathers.Count() - 1);
+			return weathers[id];
     }
 
     public async Task<List<ViewWeather>> Read()

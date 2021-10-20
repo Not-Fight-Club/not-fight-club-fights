@@ -16,36 +16,43 @@ namespace FightsApi.Controllers
 
     private readonly IFightRepository _fr;
     private readonly IRepository<ViewFighter, int> _fighterrepo;
+    private readonly IWeatherRepository _wr;
 
-    public FightController(IFightRepository fr, IRepository<ViewFighter, int> fighterrepo)
+    public FightController(IFightRepository fr, IRepository<ViewFighter, int> fighterrepo, IWeatherRepository wr)
     {
       _fr = fr;
       _fighterrepo = fighterrepo;
+      _wr = wr;
+
     }
 
- 
-    private async Task<List<ViewFighter>> AddFightersToFight(List<ViewCharacter> viewFighters, int fightId )
+
+    private async Task<List<ViewFighter>> AddFightersToFight(List<ViewCharacter> viewFighters, int fightId)
     {
       List<ViewFighter> result = new List<ViewFighter>();
-      foreach(var f in viewFighters)
+      foreach (var f in viewFighters)
       {
         ViewFighter viewf = new ViewFighter();
         viewf.FightId = fightId;
         viewf.CharacterId = f.CharacterId;
-       var saved = await  _fighterrepo.Add(viewf);
+        var saved = await _fighterrepo.Add(viewf);
         result.Add(saved);
 
       }
       return result;
     }
-    
-    [HttpPost("fight/private")]
+
+    [HttpPost("/fight/private")]
     public async Task<ActionResult<ViewFight>> CreatePrivateFight(ViewFightCharacter viewFight)
-    { 
+    {
+      if(viewFight.Weather == 0)
+			{
+        viewFight.Weather = (await _wr.ReadRandom()).WeatherId;
+			}
       ViewFight fight = new ViewFight()
       {
-        Weather = 1,//new Random().Next(1, 10),
-        Location = new Random().Next(1, 10),
+        Weather = viewFight.Weather,
+        Location = viewFight.Location,
         StartDate = viewFight.StartDate,
         EndDate = viewFight.EndDate,
         CreatorId = viewFight.CreatorId,
@@ -65,13 +72,17 @@ namespace FightsApi.Controllers
       return Ok(fightCreate);
     }
 
-    [HttpPost("fight/public")]
+    [HttpPost("/fight/public")]
     public async Task<ActionResult<ViewFight>> CreatePublicFight(ViewFightCharacter viewFight)
     {
+      if (viewFight.Weather == 0)
+      {
+        viewFight.Weather = (await _wr.ReadRandom()).WeatherId;
+      }
       ViewFight fight = new ViewFight()
       {
-        Weather = 1,//new Random().Next(1, 10),
-        Location = new Random().Next(1, 10),
+        Weather = viewFight.Weather,
+        Location = viewFight.Location,
         StartDate = viewFight.StartDate,
         EndDate = viewFight.EndDate,
         CreatorId = viewFight.CreatorId,
@@ -138,6 +149,15 @@ namespace FightsApi.Controllers
       return Ok(fight);
     }
 
+    [HttpGet("/fight/ongoing")]
+    public async Task<ActionResult<ViewFight[]>> GetAllOngoing()
+
+    {
+      ViewFight[] fights = await _fr.Ongoing();
+      return Ok(fights);
+    }
+
+    //list all previous fights 
     [HttpGet("/[Controller]/[action]")]
     public async Task<ActionResult<List<ViewFight>>> All()
     {
