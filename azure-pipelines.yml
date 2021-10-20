@@ -51,7 +51,7 @@ stages:
           displayName: 'Publish code coverage report'
           inputs:
             codeCoverageTool: 'Cobertura'
-            summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+            summaryFileLocation: '$(Agent.TempDirectory)/*/TestResults/coverage.cobertura.xml'
 
   - stage: Build
     displayName: Build stage
