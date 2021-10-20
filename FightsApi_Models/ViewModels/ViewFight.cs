@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,7 @@ namespace FightsApi_Models.ViewModels
     public int FightId { get; set; }
     //public int? Winner { get; set; }
     //public int? Loser { get; set; }
+   
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string Result { get; set; }

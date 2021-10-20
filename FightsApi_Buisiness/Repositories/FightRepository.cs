@@ -41,7 +41,14 @@ namespace FightsApi_Buisiness.Repositiories
         Public = obj.PublicFight,
         CreatorId = obj.CreatorId
       };
-      _dbContext.Fights.Add(fight);
+      if (fight.StartDate < fight.EndDate)
+      {
+        _dbContext.Fights.Add(fight);
+      }
+      else
+      {
+        Console.WriteLine("Error: StartDate must be < EndDate");
+      }
       await _dbContext.SaveChangesAsync();
       return _mapper.ModelToViewModel(fight);
     }
