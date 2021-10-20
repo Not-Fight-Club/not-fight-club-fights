@@ -40,7 +40,11 @@ namespace FightsApi
       {
         options.AddPolicy(name: "FightsApiLocal", builder =>
         {
-          builder.WithOrigins("http://localhost:4200", "https://localhost:4200")
+          builder.WithOrigins(
+            "http://localhost:4200",
+            "https://localhost:4200",
+            "http://notfightclub.eastus.cloudapp.azure.com"
+          )
           .AllowAnyHeader()
           .AllowAnyMethod();
         });
