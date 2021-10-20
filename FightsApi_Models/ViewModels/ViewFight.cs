@@ -44,7 +44,7 @@ namespace FightsApi_Models.ViewModels
     public int? Weather { get; set; }
     public Guid? CreatorId { get; set; }
 
-    public bool? PublicFight { get; set; }
+    public bool PublicFight { get; set; }
 
     public string WeatherNavigation { get; set; }
     public string LocationNavigation { get; set; }
