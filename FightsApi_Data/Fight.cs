@@ -19,7 +19,8 @@ namespace FightsApi_Data
         public int? Location { get; set; }
         public int? Weather { get; set; }
         public Guid? CreatorId { get; set; }
-        public bool? Public { get; set; }
+        public bool Public { get; set; }
+        public bool Finished { get; set; }
 
         public virtual Location LocationNavigation { get; set; }
         public virtual Weather WeatherNavigation { get; set; }

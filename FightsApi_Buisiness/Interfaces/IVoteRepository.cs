@@ -16,5 +16,13 @@ namespace FightsApi_Buisiness.Interfaces
     /// <param name="fighterId"></param>
     /// <returns></returns>
     public Task<ViewVote[]> ReadbyChoice(int fightId, int fighterId);
+
+    /// <summary>
+    /// Check if user has voted for a specified fight.
+    /// </summary>
+    /// <param name="fightId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public Task<bool> CheckUserVote(int fightId, Guid userId);
   }
 }
